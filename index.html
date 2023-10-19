@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <title>My Webpage</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="pokemon.js"></script>
+        </head>
+        <body>
+            
+        </body>
+        <script>
+            var poke_count = undefined;
+            var pokemon = undefined;
+            var is_ready = false;
+            $(document).ready() // Run when the document is ready
+            {
+                console.log("Beginning initial load...");
+                console.log("Getting pokemon count...");
+                poke_count = get_pokemon_count();
+                console.log("Fetching a random pokemon...");
+                pokemon = get_random_pokemon(poke_count);
+                console.log("Generating fact pool...");
+                console.log("Selecting fact pool...");
+                console.log("Game is ready!");
+            }
+            is_loading = true;
+        </script>
+    </html>
