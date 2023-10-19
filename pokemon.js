@@ -1,3 +1,9 @@
+/* DIFFICULTY INTEGERS 
+1 - Easy
+2 - Normal
+3 - Hard
+*/
+
 class PokemonGender
 {
     constructor(gender_rate, has_gender_differences)
@@ -200,7 +206,7 @@ class PokemonSize
     {
         switch(difficulty_integer)
         {
-
+            case 1:
         }
         return String(this.height) + " cm";
     }
