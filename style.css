@@ -1,21 +1,76 @@
 @import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;800&family=Roboto&display=swap');
 
+:root
+{
+    --blue: #6DA3BB;
+    --lightgrey: #E7E7E5;
+    --darkgrey: #464646;
+    --red: #C04C4C;
+    --yellow: #ffbd16;
+}
+
+body
+{
+    margin:0;
+    background-color:var(--lightgrey);
+}
+
+header
+{
+    background-color:var(--red);
+}
+
 h1, h2, h3
 {
     font-family: 'Playpen Sans', sans-serif;
     text-align:center;
 }
-p
+
+h1
+{
+    margin-top: 0;
+    padding-top:0.75em;
+    margin-bottom:0;
+    padding-bottom:0.75em;
+    font-size:3em;
+    color:var(--yellow);
+    text-shadow:3px 3px 0 #FFF, -3px 3px 0 #FFF, -3px -3px 0 #FFF, 3px -3px 0 #FFF;
+}
+
+main
+{
+    padding-top:1em;
+    padding-bottom:1em;
+}
+
+p, label
 {
     font-family: 'Roboto', sans-serif;
     text-align:center;
+    color: var(--darkgrey);
 }
 
 #start_options
 {
     display:block;
     text-align:center;
+    
+    
 }
+
+#start-button
+{
+    cursor:pointer;
+    font-family: 'Playpen Sans', sans-serif;
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--darkgrey);
+    background-color: var(--red);
+    text-shadow: 2px 2px 0 #FFF, -2px 2px 0 #FFF, -2px -2px 0 #FFF, 2px -2px 0 #FFF;
+    padding: 0.5em;
+    border: 5px solid var(--darkgrey);
+    border-radius: 15px;
+  }
 
 /* This was made a class as opposed to an ID like everything else due to some weirdness with the form not being hidden. */
 .game_container
@@ -30,13 +85,36 @@ p
     text-align:center;
 }
 
+
+/* Element | file:///E:/User%20Files/OneDrive/Documents/School/Dynamic%20Web/P2/index.html */
+
 #guess_input
 {
     margin:auto;
+    font-family: 'Playpen Sans', sans-serif;
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--darkgrey);
+    text-shadow: 2px 2px 0 #FFF, -2px 2px 0 #FFF, -2px -2px 0 #FFF, 2px -2px 0 #FFF;
+    padding: 0.5em;
+    border: 5px solid var(--darkgrey);
+    border-radius: 15px;
 }
+
 #guess_button
 {
     margin:auto;
+    margin-top:0.5em;
+    cursor:pointer;
+    font-family: 'Playpen Sans', sans-serif;
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--darkgrey);
+    background-color: var(--red);
+    text-shadow: 2px 2px 0 #FFF, -2px 2px 0 #FFF, -2px -2px 0 #FFF, 2px -2px 0 #FFF;
+    padding: 0.5em;
+    border: 5px solid var(--darkgrey);
+    border-radius: 15px;
 }
 
 #result_container
@@ -44,6 +122,7 @@ p
     display:none;
     flex-direction:column;
     margin:auto;
+    color:var(--darkgrey);
 }
 
 #play_again_button
@@ -55,4 +134,25 @@ p
 {
     display:none;
     margin:auto;
+}
+
+#play_again_button
+{
+    margin:auto;
+    margin-top:0.5em;
+    cursor:pointer;
+    font-family: 'Playpen Sans', sans-serif;
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--darkgrey);
+    background-color: var(--red);
+    text-shadow: 2px 2px 0 #FFF, -2px 2px 0 #FFF, -2px -2px 0 #FFF, 2px -2px 0 #FFF;
+    padding: 0.5em;
+    border: 5px solid var(--darkgrey);
+    border-radius: 15px;
+}
+
+#score_counter
+{
+    color:var(--darkgrey);
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <html lang="en">
     <head>
-        <title>My Webpage</title>
+        <title>PokéGuesser - Dynamic Web P2</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -30,7 +30,7 @@
                     <div id="guess_container" class="game_container">
                         <form id="guess_form" class="game_container">
                             <input type="text" class="game_container" id="guess_input" name="guess" placeholder="Enter your guess here..." />
-                            <br />
+                            <br /><br />
                             <input type="submit" class="game_container" id="guess_button" value="Guess" />
                         </form>
                     </div>
@@ -156,7 +156,6 @@
                 let game_container = document.getElementsByClassName("game_container");
                 for (let i = 0; i < fact_pool.length; ++i)
                 {
-                    console.log(i);
                     let fact = document.createElement("p");
                     fact.innerText = fact_pool[i];
                     fact_container.appendChild(fact);
@@ -166,7 +165,8 @@
                 start_options.style.display = "none";
                 for (let i = 0; i < game_container.length; ++i)
                 {
-                    game_container[i].style.display = "block";
+                    game_container[i].style.display = "flex";
+                    game_container[i].style.flexDirection = "column";
                 }
                 
                 
@@ -220,10 +220,8 @@
                     score += 1;
                     update_score();
                     pokemon_image.style.display = "block";
-                    console.log(guess_container.length);
                     for (let i = 0; i < guess_container.length; ++i)
                     {
-                        console.log(i);
                         guess_container[i].style.display = "none";
                     }
                     result_container.style.display = "flex";
@@ -237,10 +235,8 @@
                     guess_subtext.innerText = "The Pokemon was " + name + "!";
                     pokemon_image.src = pokemon.official_artwork;
                     pokemon_image.style.display = "block";
-                    console.log(guess_container.length);
                     for (let i = 0; i < guess_container.length; ++i)
                     {
-                        console.log(i);
                         guess_container[i].style.display = "none";
                     }
                     result_container.style.display = "flex";

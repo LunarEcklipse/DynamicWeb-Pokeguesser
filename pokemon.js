@@ -612,7 +612,7 @@ class Pokemon
                     }
                     break;
                 case 4: // Base Color
-                    fact_pool.push("This Pokemon's base color is " + this.color + ".");
+                    fact_pool.push("This Pokemon's main color is " + this.color + ".");
                     break;
                 case 5: // Genera Description
                     fact_pool.push("This Pokémon is known as the " + this.genera + ".");
@@ -860,7 +860,6 @@ function get_list_of_all_pokemon_names(count) // Fetches all of the pokemon name
         dataType: "json",
         async: false,
         success: function(data) {
-            console.log(data);
             data.results.forEach((pokemon) => {
                 pokemon_names.push(pokemon.name);
                 // if the pokemon name has a dash in it, add another entry with the dash repalced with a space.
