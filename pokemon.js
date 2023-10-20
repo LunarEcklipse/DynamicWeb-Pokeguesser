@@ -54,15 +54,14 @@ class PokemonGender
                     default:
                         if (Math.floor(Math.random() * 2) === 0) // We use some randomness here to vary the output.
                         {
-                            return "This Pokémon has a " + String(male_chance) + "% chance of being male and a " + String(female_chance) + "% chance of being female.";
+                            return "This Pokémon has a " + String(Math.trunc(male_chance)) + "% chance of being male and a " + String(Math.trunc(female_chance)) + "% chance of being female.";
                         }
                         else
                         {
-                            return "This Pokémon has a " + String(female_chance) + "% chance of being female and a " + String(male_chance) + "% chance of being male.";
+                            return "This Pokémon has a " + String(Math.trunc(female_chance)) + "% chance of being female and a " + String(Math.trunc(male_chance)) + "% chance of being male.";
                         }
                         
                 }
-                return "This pokemon has a " + String(this.gender_rate * 100) + "% chance of being female.";
                 break;
             default:
                 return "This Pokémon never has any gender.";
@@ -202,7 +201,7 @@ class PokemonTypes
                         return this.type1.charAt(0).toUpperCase() + this.type1.slice(1);
                         break;
                     case 1:
-                        return this.type2.charAt(0).toUpperCase() + this.type1.slice(1);
+                        return this.type2.charAt(0).toUpperCase() + this.type2.slice(1);
                         break;
                 }
                 break;
@@ -233,23 +232,23 @@ class PokemonSize
         switch(difficulty_integer)
         {
             case 1: // += 0%
-                return "This Pokémon is " + String(this.height) + " cm tall.";
+                return "This Pokémon is " + String(this.height.toFixed(2)) + " cm tall.";
                 break;
             case 2: // +- 25%
                 let rand_min = this.height * (Math.floor((100 - (Math.random() * 25))) / 100); // Calculates the minimum.
                 let rand_max = this.height * (Math.floor((100 + (Math.random() * 25))) / 100); // Calculates the maximum.
-                return "This Pokémon is between " + String(rand_min) + " and " + String(rand_max) + " cm tall.";
+                return "This Pokémon is between " + String(rand_min.toFixed(2)) + " and " + String(rand_max.toFixed(2)) + " cm tall.";
                 break;
             case 3: // +- 50% plus they only get greater than or less than.
                 switch(Math.floor(Math.random() * 2))
                 {
                     case 0:
                         let rand_min = this.height * (Math.floor((100 - (Math.random() * 50))) / 100); // Calculates the minimum.
-                        return "This Pokémon is taller than " + String(rand_min) + " cm.";
+                        return "This Pokémon is taller than " + String(rand_min.toFixed(2)) + " cm.";
                         break;
                     case 1:
                         let rand_max = this.height * (Math.floor((100 + (Math.random() * 50))) / 100); // Calculates the maximum.
-                        return "This Pokémon is shorter than " + String(rand_max) + " cm.";
+                        return "This Pokémon is shorter than " + String(rand_max.toFixed(2)) + " cm.";
                         break;
                 }
                 break;
@@ -262,23 +261,23 @@ class PokemonSize
         switch(difficulty_integer)
         {
             case 1:
-                return "This Pokémon weighs " + String(this.weight) + " kg.";
+                return "This Pokémon weighs " + String(this.weight.toFixed(2)) + " kg.";
                 break;
             case 2:
                 let rand_min = this.weight * (Math.floor((100 - (Math.random() * 25))) / 100); // Calculates the minimum.
                 let rand_max = this.weight * (Math.floor((100 + (Math.random() * 25))) / 100); // Calculates the maximum.
-                return "This Pokémon weighs between " + String(rand_min) + " and " + String(rand_max) + " kg.";
+                return "This Pokémon weighs between " + String(rand_min.toFixed(2)) + " and " + String(rand_max.toFixed(2)) + " kg.";
                 break;
             case 3:
                 switch(Math.floor(Math.random() * 2))
                 {
                     case 0:
                         let rand_min = this.weight * (Math.floor((100 - (Math.random() * 50))) / 100); // Calculates the minimum.
-                        return "This Pokémon weighs more than " + String(rand_min) + " kg.";
+                        return "This Pokémon weighs more than " + String(rand_min.toFixed(2)) + " kg.";
                         break;
                     case 1:
                         let rand_max = this.weight * (Math.floor((100 + (Math.random() * 50))) / 100); // Calculates the maximum.
-                        return "This Pokémon weighs less than " + String(rand_max) + " kg.";
+                        return "This Pokémon weighs less than " + String(rand_max.toFixed(2)) + " kg.";
                         break;
                 }
                 break;   
@@ -314,7 +313,7 @@ class Pokemon
     get_random_facts(difficulty_integer) // Generates the random fact pool for the pokemon.
     {
         let fact_pool = []
-        for (let i = 0; i < 12; ++i)
+        for (let i = 0; i < 15; ++i)
         {
             switch(i)
             {
@@ -635,19 +634,102 @@ class Pokemon
                                     break;
                             }
                     }
-                case 10: // Move Pool
+                    break;
+                case 10: // Move Pool (5 on easy, 4 on medium, 3 on hard)
+                    let move_array = this.moves.sort(() => 0.5 - Math.random()); // Randomizes the move array.
+                    switch(difficulty_integer)
+                    {
+                        case 1: // Easy - 5
+                            fact_pool.push("This Pokémon can learn the moves: " + move_array[0] + ", " + move_array[1] + ", " + move_array[2] + ", " + move_array[3] + ", and " + move_array[4] + ".");
+                            break;
+                        case 2: // Normal - 4
+                            fact_pool.push("This Pokémon can learn the moves: " + move_array[0] + ", " + move_array[1] + ", " + move_array[2] + ", and " + move_array[3] + ".");
+                            break;
+                        case 3: // Hard - 3
+                            fact_pool.push("This Pokémon can learn the moves: " + move_array[0] + ", " + move_array[1] + ", and " + move_array[2] + ".");
+                            break;
+                    }
                     break;
                 case 11: // Gender data
+                    fact_pool.push(this.gender_data.get_gender_string());
                     break;
                 case 12: // Growth rate
+                    fact_pool.push("This Pokémon has a " + this.growth_rate + " growth rate.");
                     break;
                 case 13: // Shape
+                    if (this.shape === null)
+                    {
+                        fact_pool.push("This Pokémon does not have a defined shape.");
+                        break;
+                    }
+                    else
+                    {
+                        fact_pool.push("This Pokémon has the " + this.shape + " shape.");
+                        break;
+                    }
                     break;
                 case 14: // Abilities
+                    switch(difficulty_integer)
+                    {
+                        case 1: // Easy
+                            let ability_array = this.pokemon_abilities.sort(() => 0.5 - Math.random());
+                            switch(this.pokemon_abilities.length)
+                            {
+                                case 0:
+                                    fact_pool.push("This Pokémon cannot have any abilities.");
+                                case 1:
+                                    fact_pool.push("This Pokémon can have the " + ability_array[0] + " ability.");
+                                    break;
+                                case 2:
+                                    fact_pool.push("This Pokémon can have the " + ability_array[0] + " and " + ability_array[1] + " abilities.");
+                                    break;
+                                default:
+                                    fact_pool.push("This Pokémon can have the " + ability_array[0] + ", " + ability_array[1] + ", and " + ability_array[2] + " abilities.");
+                                    break;
+                            }
+                            break;
+                        case 2: // Medium
+                            if (this.pokemon_abilities.length > 2)
+                            {
+                                // slice the array to 2.
+                                let ability_array = this.pokemon_abilities.sort(() => 0.5 - Math.random());
+                                ability_array = this.pokemon_abilities.slice(0, 2);
+                                fact_pool.push("This Pokémon can have the " + ability_array[0] + " and " + ability_array[1] + " abilities.");
+                                break;
+                            }
+                            else if (this.pokemon_abilities.length === 2)
+                            {
+                                let ability_array = this.pokemon_abilities.sort(() => 0.5 - Math.random());
+                                fact_pool.push("This Pokémon can have the " + ability_array[0] + " and " + ability_array[1] + " abilities.");
+                                break;
+                            }
+                            else if (this.pokemon_abilities.length === 1)
+                            {
+                                fact_pool.push("This Pokémon can have the " + this.pokemon_abilities[0] + " ability.");
+                                break;
+                            }
+                            else
+                            {
+                                fact_pool.push("This Pokémon cannot have any abilities.");
+                                break;
+                            }
+                            break;
+                        case 3: // Hard
+                            if (this.pokemon_abilities.length >= 1)
+                            {
+                                let ability_array = this.pokemon_abilities.sort(() => 0.5 - Math.random());
+                                ability_array = ability_array.slice(0,1);
+                                fact_pool.push("This Pokémon can have the " + ability_array[0] + " ability.");
+                            }
+                            else
+                            {
+                                fact_pool.push("This Pokémon cannot have any abilities.");
+                            }
+                            break;
+                    }
                     break;
             }
         }
-        console.log(fact_pool);
         return fact_pool;
     }
 
@@ -726,7 +808,6 @@ function get_random_pokemon(num_available)
         async: false,
         success: function(species_data)
         {
-            console.log(species_data);
             let name = species_data.name;
             let color = species_data.color.name;
             let egg_groups = [];
@@ -746,7 +827,15 @@ function get_random_pokemon(num_available)
             let is_baby = species_data.is_baby;
             let is_legendary = species_data.is_legendary;
             let is_mythical = species_data.is_mythical;
-            let shape = species_data.shape.name;
+            let shape = undefined;
+            if (species_data.shape !== null)
+            {
+                shape = species_data.shape.name;
+            }
+            else
+            {
+                shape = null;
+            }
             let num_varieties = species_data.varieties.length;
             
             let game_data = get_pokemon_game_data(dex_num);
