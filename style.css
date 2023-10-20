@@ -1,0 +1,25 @@
+#start_options
+{
+    display:block;
+}
+
+/* This was made a class as opposed to an ID like everything else due to some weirdness with the form not being hidden. */
+.game_container
+{
+    display:none;
+}
+
+#guess_container
+{
+    display:none;
+}
+
+#result_container
+{
+    display:none;
+}
+
+#pokemon_image
+{
+    display:none;
+}

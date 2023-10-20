@@ -289,6 +289,8 @@ class Pokemon
 {
     constructor(name, dex_number, color, egg_groups, gender_data, genera, original_generation, growth_rate, is_baby, is_legendary, is_mythical, shape, num_varieties, pokemon_size, official_artwork, base_stats, moves, pokemon_types, pokemon_abilities)
     {
+        // convert - in name to spaces
+        name = name.replace(/-/g, " ");
         this.name = name;
         this.dex_num = dex_number, 
         this.color = color;
@@ -733,7 +735,7 @@ class Pokemon
         return fact_pool;
     }
 
-    select_random_facts(num_facts, difficulty_integer)
+    select_random_facts(difficulty_integer)
     {
         /*
             7 on easy, 5 on medium, 3 on hard
@@ -754,12 +756,25 @@ class Pokemon
             - Abilities (3 on easy, 2 on medium, 1 on hard)
 
         */
-        let facts = [];
-        for (let i = 0; i < num_facts; ++i)
+        let fact_pool = this.get_random_facts();
+        fact_pool = fact_pool.sort(() => 0.5 - Math.random());
+        switch(difficulty_integer)
         {
-
+            case 1: // Easy
+                fact_pool = fact_pool.slice(0, 7);
+                break;
+            case 2:
+                fact_pool = fact_pool.slice(0, 5);
+                break;
+            case 3:
+                fact_pool = fact_pool.slice(0, 3);
+                break;
+            default: // Default to normal in case of breakdown for whatever reason. This shouldn't happen.
+                console.warn("Difficulty integer was not 1, 2, or 3. Defaulting to normal difficulty...")
+                fact_pool = fact_pool.slice(0, 5);
+                break;
         }
-
+        return fact_pool;
     }
 }
 

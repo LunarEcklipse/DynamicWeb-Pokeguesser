@@ -3,79 +3,279 @@
     <head>
         <title>My Webpage</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="pokemon.js"></script>
         </head>
         <body>
-            <form>
-                <input type="radio" id="difficulty-easy" name="difficulty" value="Easy" />
-                <label for="difficulty-easy">Easy</label>
-                <input type="radio" id="difficulty-medium" name="difficulty" value="Medium" />
-                <label for="difficulty-medium">Medium</label>
-                <input type="radio" id="difficulty-hard" name="difficulty" value="Hard" />
-                <label for="difficulty-hard">Hard</label>
-                <input type="submit" id="start-button" value="Loading..." disabled /> <!-- TODO: Add onclick handler to start game -->
-            </form>
+            <header>
+                <h1>PokéGuesser</h1>
+            </header>
+            <main>
+                <div id="start_options">
+                    <form id="start-options">
+                        <input type="radio" id="difficulty-easy" name="difficulty" value="Easy" />
+                        <label for="difficulty-easy">Easy</label>
+                        <input type="radio" id="difficulty-medium" name="difficulty" value="Medium" checked/>
+                        <label for="difficulty-medium">Medium</label>
+                        <input type="radio" id="difficulty-hard" name="difficulty" value="Hard" />
+                        <label for="difficulty-hard">Hard</label>
+                        <input type="submit" id="start-button" value="Loading..." disabled /> <!-- TODO: Add onclick handler to start game -->
+                    </form>
+                </div>
+                <div id="game_container" class="game_container">
+                    <div id="fact_container" class="game_container">
+                    </div>
+                    <div id="guess_container" class="game_container">
+                        <form id="guess_form" class="game_container">
+                            <input type="text" class="game_container" id="guess_input" name="guess" placeholder="Enter your guess here..." />
+                            <input type="submit" class="game_container" id="guess_button" value="Guess" />
+                        </form>
+                    </div>
+                </div>
+                <div id="result_container">
+                    <image id="pokemon_image" src="" alt="" />
+                    <h2 id="guess_text"></h2>
+                    <h3 id="guess_subtext"></h3>
+                    <button id="play_again_button" onclick="">Play Again</button>
+                </div>
+            </main>
+            <footer>
+                <p id="score_counter">Score: 0</p>
+            </footer>
         </body>
         <script>
             var poke_count = undefined;
+            var poke_list = [];
             var pokemon = undefined;
             var fact_pool = [];
             var is_ready = false;
             var difficulty = undefined;
             var start_button = undefined;
+            var guess_button = undefined;
+            var player_guess = null;
+            var score = 0;
             
             $(document).ready() // Run when the document is ready
             {
                 start_button = document.getElementById("start-button");
-                start_button.addEventListener("submit", (e) => {
+                start_button.addEventListener("click", (e) => {
+                    console.log("Game start button clicked!");
                     e.preventDefault();
-                    start_game();
-                    let diff = document.getElementsByName('difficulty');
-                    for (let i = 0; i < diff.length; i++) {
+                    difficulty = get_selected_difficulty();
+                    if (difficulty !== null && difficulty !== undefined)
+                    {
+                        start_game(difficulty);
+                    }
+                })
+                guess_button = document.getElementById("guess_button");
+                guess_button.addEventListener("click", (e) => {
+                    console.log("Guess submitted!");
+                    e.preventDefault();
+                    player_guess = document.getElementById("guess_input").value;
+                    player_guess = sanitize_guess(player_guess);
+                    let was_guess_pokemon = undefined;
+                    let was_guess_correct = undefined;
+                    if (player_guess !== null && player_guess !== undefined)
+                    {
+                        was_guess_pokemon = check_if_guess_was_pokemon(player_guess);
+                    }
+                    if (was_guess_pokemon === false)
+                    {
+                        alert("Guess was not a valid Pokemon!");
+                    }
+                    else
+                    {
+                        if (check_if_guess_was_correct(player_guess))
+                        {
+                            handle_guess(player_guess, true);
+                        }
+                        else
+                        {
+                            handle_guess(player_guess, false);
+                        }
+                    }
+                })
+                play_again_button = document.getElementById("play_again_button");
+                play_again_button.addEventListener("click", (e) => {
+                    console.log("Play again button clicked!");
+                    e.preventDefault();
+                    play_again();
+                })
+                start_button.value = "Loading...";
+                console.log("Beginning initial load...");
+                console.log("Getting pokemon count...");
+                poke_count = get_pokemon_count();
+                console.log("Fetching pokemon list...");
+                poke_list = get_list_of_all_pokemon_names(poke_count);
+                console.log("Game is ready!");
+                is_ready = true;
+                start_button.value = "Start Game";
+                start_button.disabled = false;
+            }
+            
+            function get_selected_difficulty()
+            {
+                let diff = document.getElementsByName('difficulty');
+                let diff_out = undefined;
+                for (let i = 0; i < diff.length; i++) {
                         if (diff[i].checked) {
                             switch(diff[i].id)
                             {
                                 case "difficulty-easy":
-                                    difficulty = 1;
+                                    console.log("Selected easy difficulty");
+                                    diff_out = 1;
                                     break;
                                 case "difficulty-medium":
-                                    difficulty = 2;
+                                    console.log("Selected medium difficulty");
+                                    diff_out = 2;
                                     break;
                                 case "difficulty-hard":
-                                    difficulty = 3;
+                                    console.log("Selected hard difficulty");
+                                    diff_out = 3;
                                     break;
                                 default:
-                                    difficulty = undefined;
+                                    diff_out = undefined;
                                     break;
                             }
                         }
                     }
-                    if (difficulty !== undefined)
-                    {
-                        start_game(difficulty);
-                    }
-                });
-                start_button.addEventListener("click", start_game)
-                start_button.innerText = "Loading...";
-                console.log("Beginning initial load...");
-                console.log("Getting pokemon count...");
-                poke_count = get_pokemon_count();
-                console.log("Fetching a random pokemon...");
-                pokemon = get_random_pokemon(poke_count);
-                console.log("Generating fact pool...");
-                fact_pool = pokemon.get_random_facts(2);
-                console.log("Selecting fact pool...");
-                console.log("Game is ready!");
-                is_ready = true;
-                start_button.innerText = "Start Game";
-                start_button.disabled = false;
-            }
-            
-            function start_game(difficulty)
-            {
-                console.log("Weee!");
+                return diff_out;
             }
 
+            function start_game(difficulty)
+            {
+                console.log("Getting Pokemon from API...");
+                pokemon = get_random_pokemon(poke_count);
+                console.log("Selecting fact pool...");
+                fact_pool = pokemon.select_random_facts(difficulty);
+                console.log("Fact pool selected!");
+                let start_container = document.getElementById("start_options");
+                let game_container = document.getElementsByClassName("game_container");
+                for (let i = 0; i < fact_pool.length; ++i)
+                {
+                    console.log(i);
+                    let fact = document.createElement("p");
+                    fact.innerText = fact_pool[i];
+                    fact_container.appendChild(fact);
+                }
+                player_guess = null;
+                
+                start_options.style.display = "none";
+                for (let i = 0; i < game_container.length; ++i)
+                {
+                    game_container[i].style.display = "block";
+                }
+                
+                
+            }
+
+            function sanitize_guess(guess)
+            {
+                guess = String(guess);
+                guess = guess.toLowerCase();
+                guess = guess.trim();
+                return guess;
+            }
+
+            function check_if_guess_was_pokemon(guess)
+            {
+                for (let i = 0; i < poke_list.length; ++i)
+                {
+                    if (guess === poke_list[i])
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function check_if_guess_was_correct(guess)
+            {
+                if (guess === pokemon.name)
+                {
+                    return true;
+                }
+                return false;
+            }
+
+            function handle_guess(guess, was_correct)
+            {
+                let guess_container = document.getElementsByClassName("game_container");
+                let result_container = document.getElementById("result_container");
+                let pokemon_image = document.getElementById("pokemon_image");
+                let guess_text = document.getElementById("guess_text");
+                let guess_subtext = document.getElementById("guess_subtext");
+                if (was_correct)
+                {
+                    console.log("Guess was correct.");
+                    guess_text.innerText = "You Guessed Correctly!";
+                    // make the first letter of pokemon.name uppercase
+                    let name = pokemon.name;
+                    name = name.charAt(0).toUpperCase() + name.slice(1);
+                    guess_subtext.innerText = "The Pokemon was " + name + "!";
+                    pokemon_image.src = pokemon.official_artwork;
+                    score += 1;
+                    update_score();
+                    pokemon_image.style.display = "block";
+                    console.log(guess_container.length);
+                    for (let i = 0; i < guess_container.length; ++i)
+                    {
+                        console.log(i);
+                        guess_container[i].style.display = "none";
+                    }
+                    result_container.style.display = "block";
+                }
+                else
+                {
+                    console.log("Guess was incorrect.");
+                    guess_text.innerText = "You Guessed Incorrectly!";
+                    let name = pokemon.name;
+                    name = name.charAt(0).toUpperCase() + name.slice(1);
+                    guess_subtext.innerText = "The Pokemon was " + name + "!";
+                    pokemon_image.src = pokemon.official_artwork;
+                    pokemon_image.style.display = "block";
+                    console.log(guess_container.length);
+                    for (let i = 0; i < guess_container.length; ++i)
+                    {
+                        console.log(i);
+                        guess_container[i].style.display = "none";
+                    }
+                    result_container.style.display = "block";
+                }
+            }
+
+            function play_again()
+            {
+                // Set pokemon_img src to ""
+                // Set guess_text to ""
+                // Set result_container display to none
+                // Set guess_container display to block
+                // Set guess_input value to ""
+                
+                // Hide the image
+                let pokemon_image = document.getElementById("pokemon_image");
+                pokemon_image.style.display = "none";
+                pokemon_image.src = "";
+                // Hide the result container
+                let result_container = document.getElementById("result_container");
+                result_container.style.display = "none";
+                
+                // Clear the guess input
+                let guess_input = document.getElementById("guess_input");
+                guess_input.value = "";
+
+                // Clear the facts list
+                let fact_container = document.getElementById("fact_container");
+                fact_container.innerHTML = "";
+
+                start_game(difficulty);
+            }
+
+            function update_score()
+            {
+                let score_counter = document.getElementById("score_counter");
+                score_counter.innerText = "Score: " + score;
+            }
         </script>
     </html>
