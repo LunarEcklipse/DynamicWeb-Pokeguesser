@@ -4,6 +4,58 @@
 3 - Hard
 */
 
+function convert_egg_group_name(name) // Makes egg group names pretty.
+{
+    switch(name)
+    {
+        case "monster":
+            return "Monster";
+            break;
+        case "water1":
+            return "Water 1";
+            break;
+        case "bug":
+            return "Bug";
+            break;
+        case "flying":
+            return "Flying";
+            break;
+        case "ground":
+            return "Field";
+            break;
+        case "fairy":
+            return "Fairy";
+            break;
+        case "plant":
+            return "Grass";
+            break;
+        case "humanshape":
+            return "Human-Like";
+            break;
+        case "water3":
+            return "Water 3";
+            break;
+        case "mineral":
+            return "Mineral";
+            break;
+        case "indeterminate":
+            return "Amorphous";
+            break;
+        case "water2":
+            return "Water 2";
+            break;
+        case "ditto":
+            return "Ditto";
+            break;
+        case "dragon":
+            return "Dragon";
+            break;
+        case "no-eggs":
+            return "no-eggs"; // We return this as a special case because it's used to detect when no egg group exists.
+            break;
+    }
+}
+
 class PokemonGender
 {
     constructor(gender_rate, has_gender_differences)
@@ -290,7 +342,7 @@ class Pokemon
     constructor(name, dex_number, color, egg_groups, gender_data, genera, original_generation, growth_rate, is_baby, is_legendary, is_mythical, shape, num_varieties, pokemon_size, official_artwork, base_stats, moves, pokemon_types, pokemon_abilities)
     {
         // convert - in name to spaces
-        name = name.replace(/-/g, " ");
+        name = name.replace(/-/g, " "); // Handles edge cases on the API where dashes replace spaces.
         this.name = name;
         this.dex_num = dex_number, 
         this.color = color;
@@ -349,9 +401,13 @@ class Pokemon
                             fact_pool.push("This Pokémon is not in any egg groups.");
                             break;
                         }
+                        if (this.egg_groups[0] === "ditto")
+                        {
+                            break; // We don't let them see the ditto egg group because that would make it waaaaay too easy.
+                        }
                         if (difficulty_integer > 1)
                         {
-                            fact_pool.push("This Pokémon is in the " + this.egg_groups[Math.floor(Math.random() * this.egg_groups.length)] + " egg group and possibly one other egg group.");
+                            fact_pool.push("This Pokémon is in the " + convert_egg_group_name(this.egg_groups[Math.floor(Math.random() * this.egg_groups.length)]) + " egg group and possibly one other egg group.");
                             break;
                         }
                         else
@@ -359,10 +415,10 @@ class Pokemon
                             switch(this.egg_groups.length)
                             {
                                 case 1:
-                                    fact_pool.push("This Pokémon is in the " + this.egg_groups[0] + " egg group.");
+                                    fact_pool.push("This Pokémon is in the " + convert_egg_group_name(this.egg_groups[0]) + " egg group.");
                                     break;
                                 case 2:
-                                    fact_pool.push("This Pokémon is in the " + this.egg_groups[0] + " and " + this.egg_groups[1] + " egg groups.");
+                                    fact_pool.push("This Pokémon is in the " + convert_egg_group_name(this.egg_groups[0]) + " and " + convert_egg_group_name(this.egg_groups[1]) + " egg groups.");
                                     break;
                             }
                         }
@@ -804,9 +860,17 @@ function get_list_of_all_pokemon_names(count) // Fetches all of the pokemon name
         dataType: "json",
         async: false,
         success: function(data) {
+            console.log(data);
             data.results.forEach((pokemon) => {
                 pokemon_names.push(pokemon.name);
+                // if the pokemon name has a dash in it, add another entry with the dash repalced with a space.
+                if (pokemon.name.includes("-"))
+                {
+                    pokemon_names.push(pokemon.name.replace(/-/g, " "));
+                }
+
             });
+            pokemon_names.push("nidoran"); // We add this separately because the API handles Nidoran weirdly.
         }
     });
     return pokemon_names;
@@ -823,7 +887,16 @@ function get_random_pokemon(num_available)
         async: false,
         success: function(species_data)
         {
-            let name = species_data.name;
+            let name = undefined; // By fetching names this way, we don't have problems where the resource name and the pokemon name don't match up.
+            for (let i = 0; i < species_data.names.length; ++i)
+            {
+                if (species_data.names[i].language.name === "en")
+                {
+                    name = species_data.names[i].name;
+                    break;
+                }
+            }
+            name = name.toLowerCase(); // Converts the whole thing to lowercase.
             let color = species_data.color.name;
             let egg_groups = [];
             species_data.egg_groups.forEach((egg_group) => {

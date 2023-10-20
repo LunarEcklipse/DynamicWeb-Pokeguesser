@@ -1,25 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;800&family=Roboto&display=swap');
+
+h1, h2, h3
+{
+    font-family: 'Playpen Sans', sans-serif;
+    text-align:center;
+}
+p
+{
+    font-family: 'Roboto', sans-serif;
+    text-align:center;
+}
+
 #start_options
 {
     display:block;
+    text-align:center;
 }
 
 /* This was made a class as opposed to an ID like everything else due to some weirdness with the form not being hidden. */
 .game_container
 {
     display:none;
+    text-align:center;
 }
 
 #guess_container
 {
     display:none;
+    text-align:center;
+}
+
+#guess_input
+{
+    margin:auto;
+}
+#guess_button
+{
+    margin:auto;
 }
 
 #result_container
 {
     display:none;
+    flex-direction:column;
+    margin:auto;
+}
+
+#play_again_button
+{
+    margin:auto;
 }
 
 #pokemon_image
 {
     display:none;
+    margin:auto;
 }

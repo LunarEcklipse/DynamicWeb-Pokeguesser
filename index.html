@@ -20,6 +20,7 @@
                         <label for="difficulty-medium">Medium</label>
                         <input type="radio" id="difficulty-hard" name="difficulty" value="Hard" />
                         <label for="difficulty-hard">Hard</label>
+                        <br /><br />
                         <input type="submit" id="start-button" value="Loading..." disabled /> <!-- TODO: Add onclick handler to start game -->
                     </form>
                 </div>
@@ -29,6 +30,7 @@
                     <div id="guess_container" class="game_container">
                         <form id="guess_form" class="game_container">
                             <input type="text" class="game_container" id="guess_input" name="guess" placeholder="Enter your guess here..." />
+                            <br />
                             <input type="submit" class="game_container" id="guess_button" value="Guess" />
                         </form>
                     </div>
@@ -41,7 +43,7 @@
                 </div>
             </main>
             <footer>
-                <p id="score_counter">Score: 0</p>
+                <h3 id="score_counter">Score: 0</h3>
             </footer>
         </body>
         <script>
@@ -224,7 +226,7 @@
                         console.log(i);
                         guess_container[i].style.display = "none";
                     }
-                    result_container.style.display = "block";
+                    result_container.style.display = "flex";
                 }
                 else
                 {
@@ -241,7 +243,7 @@
                         console.log(i);
                         guess_container[i].style.display = "none";
                     }
-                    result_container.style.display = "block";
+                    result_container.style.display = "flex";
                 }
             }
 
