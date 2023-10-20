@@ -121,6 +121,37 @@ class PokemonBaseStats
                 break;
         }
     }
+
+    get_lowest_base_stat()
+    {
+        let lowest_stat = Math.min(this.base_hp, this.base_atk, this.base_def, this.base_spatk, this.base_spdef, this.base_speed);
+        switch(lowest_stat)
+        {
+            case this.base_hp:
+                return "HP";
+                break;
+            case this.base_atk:
+                return "Attack";
+                break;
+            case this.base_def:
+                return "Defense";
+                break;
+            case this.base_spatk:
+                return "Special Attack";
+                break;
+            case this.base_spdef:
+                return "Special Defense";
+                break;
+            case this.base_speed:
+                return "Speed";
+                break;
+        }
+    }
+
+    get_stats_in_order()
+    {
+        return [{"n": "HP", "v": this.base_hp}, {"n": "Attack", "v": this.base_atk}, {"n": "Defense", "v": this.base_def}, {"n": "Special Attack", "v": this.base_spatk}, {"n": "Special Defense", "v": this.base_spdef}, {"n": "Speed", "v": this.base_speed}];
+    }
 }
 
 class PokemonTypes
@@ -149,10 +180,10 @@ class PokemonTypes
         switch(this.type2)
         {
             case null:
-                return print_type(this.type1);
+                return this.type1.charAt(0).toUpperCase() + this.type1.slice(1);
                 break;
             default:
-                return print_type(this.type1) + " and " + print_type(this.type2);
+                return this.type1.charAt(0).toUpperCase() + this.type1.slice(1) + " and " + this.type2.charAt(0).toUpperCase() + this.type2.slice(1);
                 break;
         }
     }
@@ -162,25 +193,20 @@ class PokemonTypes
         switch(this.type2)
         {
             case null:
-                return print_type(this.type1);
+                return this.type1.charAt(0).toUpperCase() + this.type1.slice(1);
                 break;
             default:
                 switch(Math.floor(Math.random() * 2))
                 {
                     case 0:
-                        return print_type(this.type1);
+                        return this.type1.charAt(0).toUpperCase() + this.type1.slice(1);
                         break;
                     case 1:
-                        return print_type(this.type2);
+                        return this.type2.charAt(0).toUpperCase() + this.type1.slice(1);
                         break;
                 }
                 break;
         }
-    }
-
-    static print_type(type_string) // Capitalizes the string for printing when used in a Type
-    {
-        return type_string.charAt(0).toUpperCase() + type_string.slice(1);
     }
 }
 
@@ -202,35 +228,61 @@ class PokemonSize
         return kg * 2.20462;
     }
 
-    get_height_metric(difficulty_integer)
+    get_height(difficulty_integer)
+    {
+        switch(difficulty_integer)
+        {
+            case 1: // += 0%
+                return "This Pokémon is " + String(this.height) + " cm tall.";
+                break;
+            case 2: // +- 25%
+                let rand_min = this.height * (Math.floor((100 - (Math.random() * 25))) / 100); // Calculates the minimum.
+                let rand_max = this.height * (Math.floor((100 + (Math.random() * 25))) / 100); // Calculates the maximum.
+                return "This Pokémon is between " + String(rand_min) + " and " + String(rand_max) + " cm tall.";
+                break;
+            case 3: // +- 50% plus they only get greater than or less than.
+                switch(Math.floor(Math.random() * 2))
+                {
+                    case 0:
+                        let rand_min = this.height * (Math.floor((100 - (Math.random() * 50))) / 100); // Calculates the minimum.
+                        return "This Pokémon is taller than " + String(rand_min) + " cm.";
+                        break;
+                    case 1:
+                        let rand_max = this.height * (Math.floor((100 + (Math.random() * 50))) / 100); // Calculates the maximum.
+                        return "This Pokémon is shorter than " + String(rand_max) + " cm.";
+                        break;
+                }
+                break;
+        }
+    }
+
+
+    get_weight(difficulty_integer)
     {
         switch(difficulty_integer)
         {
             case 1:
+                return "This Pokémon weighs " + String(this.weight) + " kg.";
+                break;
+            case 2:
+                let rand_min = this.weight * (Math.floor((100 - (Math.random() * 25))) / 100); // Calculates the minimum.
+                let rand_max = this.weight * (Math.floor((100 + (Math.random() * 25))) / 100); // Calculates the maximum.
+                return "This Pokémon weighs between " + String(rand_min) + " and " + String(rand_max) + " kg.";
+                break;
+            case 3:
+                switch(Math.floor(Math.random() * 2))
+                {
+                    case 0:
+                        let rand_min = this.weight * (Math.floor((100 - (Math.random() * 50))) / 100); // Calculates the minimum.
+                        return "This Pokémon weighs more than " + String(rand_min) + " kg.";
+                        break;
+                    case 1:
+                        let rand_max = this.weight * (Math.floor((100 + (Math.random() * 50))) / 100); // Calculates the maximum.
+                        return "This Pokémon weighs less than " + String(rand_max) + " kg.";
+                        break;
+                }
+                break;   
         }
-        return String(this.height) + " cm";
-    }
-
-    get_height_imperial(difficulty_integer)
-    {
-        switch(difficulty_integer)
-        {
-
-        }
-        convert_cm_to_inches(this.height);
-        const feet = Math.floor(inches / 12);
-        const remainingInches = Math.round(inches % 12);
-        return `${feet}'${remainingInches}"`;
-    }
-
-    get_weight_metric(difficulty_integer)
-    {
-        return String(this.weight) + " kg";
-    }
-
-    get_weight_imperial(difficulty_integer)
-    {
-        return String(convert_kg_to_lbs(this.weight)) + " lbs";
     }
 }
 
@@ -261,7 +313,7 @@ class Pokemon
 
     get_random_facts(difficulty_integer) // Generates the random fact pool for the pokemon.
     {
-        fact_pool = []
+        let fact_pool = []
         for (let i = 0; i < 12; ++i)
         {
             switch(i)
@@ -269,7 +321,7 @@ class Pokemon
                 case 0: // Type
                     if (difficulty_integer < 2)
                     {
-                        let type_string = this.pokemon_types.get_type_string();
+                        let type_string = this.pokemon_types.get_type_string_both();
                         fact_pool.push("This Pokémon is a " + type_string + " type.");
                         break;
                     }
@@ -281,7 +333,7 @@ class Pokemon
                     }
                     break;
                 case 1: // Pokemon Generation
-                    fact_pool.push("This Pokémon was introduced in Generation " + String(this.original_generation) + ".");
+                    fact_pool.push("This Pokémon was introduced in " + String(this.original_generation) + ".");
                     break;
                 case 2: // Egg Groups
                     if (this.egg_groups.length === 0)
@@ -291,7 +343,12 @@ class Pokemon
                     }
                     else
                     {
-                        if (difficulty_integer < 2)
+                        if (this.egg_groups[0] === "no-eggs")
+                        {
+                            fact_pool.push("This Pokémon is not in any egg groups.");
+                            break;
+                        }
+                        if (difficulty_integer > 1)
                         {
                             fact_pool.push("This Pokémon is in the " + this.egg_groups[Math.floor(Math.random() * this.egg_groups.length)] + " egg group and possibly one other egg group.");
                             break;
@@ -520,12 +577,64 @@ class Pokemon
                             }
                             break;
                     }
+                    break;
                 case 7: // Height: Exact on easy, +/- 25% on medium, +/- 50% on hard.
+                    fact_pool.push(this.pokemon_size.get_height(difficulty_integer));
                     break;
                 case 8: // Weight: Exact on easy, +/- 25% on medium, +/- 50% on hard.
+                    fact_pool.push(this.pokemon_size.get_weight(difficulty_integer));
                     break;
                 case 9: // Base Stats
-                    break;
+                    switch(difficulty_integer) // We don't do highest/lowest on easy. On medium highest/lowest is a 25% chance. On hard it's a 50% chance.
+                    {
+                        case 1:
+                            let stat_array = this.base_stats.get_stats_in_order();
+                            stat_array = stat_array.sort(() => 0.5 - Math.random());
+                            stat_array = stat_array.slice(0, 3);
+                            fact_pool.push("This Pokémon has a base " + stat_array[0].n + " of " + String(stat_array[0].v) + ", a base " + stat_array[1].n + " of " + String(stat_array[1].v) + ", and a base " + stat_array[2].n + " of " + String(stat_array[2].v) + ".");
+                        case 2:
+                            switch(Math.floor(Math.random() * 4))
+                            {
+                                case 0:
+                                    switch(Math.floor(Math.random() * 2))
+                                    {
+                                        case 0: // Lowest
+                                            fact_pool.push("This Pokémon's lowest base stat is " + this.base_stats.get_lowest_base_stat() + ".");
+                                            break;
+                                        case 1: // Highest
+                                            fact_pool.push("This Pokémon's highest base stat is " + this.base_stats.get_highest_base_stat() + ".");
+                                            break;
+                                    }
+                                    break;
+                                default:
+                                    let stat_array = this.base_stats.get_stats_in_order();
+                                    stat_array = stat_array.sort(() => 0.5 - Math.random());
+                                    stat_array = stat_array.slice(0, 2);
+                                    fact_pool.push("This Pokémon has a base " + stat_array[0].n + " of " + String(stat_array[0].v) + " and a base " + stat_array[1].n + " of " + String(stat_array[1].v) + ".");
+                                    break;
+                            }
+                        case 3:
+                            switch(Math.floor(Math.random() * 2))
+                            {
+                                case 0:
+                                    switch(Math.floor(Math.random() * 2))
+                                    {
+                                        case 0: // Lowest
+                                            fact_pool.push("This Pokémon's lowest base stat is " + this.base_stats.get_lowest_base_stat() + ".");
+                                            break;
+                                        case 1: // Highest
+                                            fact_pool.push("This Pokémon's highest base stat is " + this.base_stats.get_highest_base_stat() + ".");
+                                            break;
+                                    }
+                                    break;
+                                default:
+                                    let stat_array = this.base_stats.get_stats_in_order();
+                                    stat_array = stat_array.sort(() => 0.5 - Math.random());
+                                    stat_array = stat_array.slice(0, 1);
+                                    fact_pool.push("This Pokémon has a base " + stat_array[0].n + " of " + String(stat_array[0].v) + ".");
+                                    break;
+                            }
+                    }
                 case 10: // Move Pool
                     break;
                 case 11: // Gender data
@@ -538,7 +647,8 @@ class Pokemon
                     break;
             }
         }
-        
+        console.log(fact_pool);
+        return fact_pool;
     }
 
     select_random_facts(num_facts, difficulty_integer)
@@ -616,6 +726,7 @@ function get_random_pokemon(num_available)
         async: false,
         success: function(species_data)
         {
+            console.log(species_data);
             let name = species_data.name;
             let color = species_data.color.name;
             let egg_groups = [];
@@ -638,7 +749,7 @@ function get_random_pokemon(num_available)
             let shape = species_data.shape.name;
             let num_varieties = species_data.varieties.length;
             
-            let game_data = get_pokemon_game_data(name);
+            let game_data = get_pokemon_game_data(dex_num);
             let abilities = [];
             game_data.abilities.forEach((ability) => {
                 abilities.push(get_pokemon_ability(ability.ability.url));
@@ -668,11 +779,11 @@ function get_random_pokemon(num_available)
     return pokemon;
 }
 
-function get_pokemon_game_data(name) // Gets game-specific data of a pokemon. This includes the pokemon's abilities, types, and egg groups.
+function get_pokemon_game_data(dex_num) // Gets game-specific data of a pokemon. This includes the pokemon's abilities, types, and egg groups.
 {   
     let out = undefined;
     $.ajax({
-        url: base_url + "pokemon/" + name,
+        url: base_url + "pokemon/" + dex_num,
         type: "GET",
         dataType: "json",
         async: false,

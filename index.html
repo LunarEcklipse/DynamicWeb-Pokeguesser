@@ -12,6 +12,7 @@
         <script>
             var poke_count = undefined;
             var pokemon = undefined;
+            var fact_pool = [];
             var is_ready = false;
             $(document).ready() // Run when the document is ready
             {
@@ -21,9 +22,10 @@
                 console.log("Fetching a random pokemon...");
                 pokemon = get_random_pokemon(poke_count);
                 console.log("Generating fact pool...");
+                fact_pool = pokemon.get_random_facts(2);
                 console.log("Selecting fact pool...");
                 console.log("Game is ready!");
             }
-            is_loading = true;
+            is_ready = true;
         </script>
     </html>
