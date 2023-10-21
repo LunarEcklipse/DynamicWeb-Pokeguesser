@@ -48,6 +48,8 @@ p, label
     font-family: 'Roboto', sans-serif;
     text-align:center;
     color: var(--darkgrey);
+    margin-left:1em;
+    margin-right:1em;
 }
 
 #start_options
