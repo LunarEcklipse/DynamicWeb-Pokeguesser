@@ -135,6 +135,66 @@ class PokemonGender
     }
 }
 
+class PokemonEggGroup
+{
+    constructor(name)
+    {
+        this.name = name;
+    }
+
+    get name_prettified() // Returns a nice-looking version of the egg group name.
+    {
+        switch(this.name)
+        {
+        case "monster":
+            return "Monster";
+            break;
+        case "water1":
+            return "Water 1";
+            break;
+        case "bug":
+            return "Bug";
+            break;
+        case "flying":
+            return "Flying";
+            break;
+        case "ground":
+            return "Field";
+            break;
+        case "fairy":
+            return "Fairy";
+            break;
+        case "plant":
+            return "Grass";
+            break;
+        case "humanshape":
+            return "Human-Like";
+            break;
+        case "water3":
+            return "Water 3";
+            break;
+        case "mineral":
+            return "Mineral";
+            break;
+        case "indeterminate":
+            return "Amorphous";
+            break;
+        case "water2":
+            return "Water 2";
+            break;
+        case "ditto":
+            return "Ditto";
+            break;
+        case "dragon":
+            return "Dragon";
+            break;
+        case "no-eggs":
+            return "no-eggs"; // We return this as a special case because it's used to detect when no egg group exists.
+            break;
+        }
+    }
+}
+
 class PokemonBaseStats
 {
     constructor(base_hp, base_atk, base_def, base_spatk, base_spdef, base_speed)
