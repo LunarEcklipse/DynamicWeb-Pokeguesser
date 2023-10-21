@@ -135,6 +135,7 @@ p, label
 {
     display:none;
     margin:auto;
+    max-width:80vw;
 }
 
 #play_again_button
