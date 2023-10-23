@@ -74,7 +74,17 @@ class PokemonGender
         }
     }
 
-    get_gender_string()
+    get gender_rate_female()
+    {
+        return this.gender_rate * 100;
+    }
+
+    get gender_rate_male()
+    {
+        return 100 - (this.gender_rate * 100);
+    }
+
+    get gender_string()
     {
         switch(this.has_gender)
         {
@@ -142,6 +152,11 @@ class PokemonEggGroup
         this.name = name;
     }
 
+    get name()
+    {
+        return this.name;
+    }
+
     get name_prettified() // Returns a nice-looking version of the egg group name.
     {
         switch(this.name)
@@ -207,7 +222,17 @@ class PokemonBaseStats
         this.base_speed = base_speed;
     }
 
-    get_highest_base_stat()
+    get stats()
+    {
+        return {"HP": this.base_hp, "Attack": this.base_atk, "Defense": this.base_def, "Special Attack": this.base_spatk, "Special Defense": this.base_spdef, "Speed": this.base_speed};
+    }
+
+    get stats_in_order()
+    {
+        return [{"n": "HP", "v": this.base_hp}, {"n": "Attack", "v": this.base_atk}, {"n": "Defense", "v": this.base_def}, {"n": "Special Attack", "v": this.base_spatk}, {"n": "Special Defense", "v": this.base_spdef}, {"n": "Speed", "v": this.base_speed}];
+    }
+
+    get highest_base_stat()
     {
         let highest_stat = Math.max(this.base_hp, this.base_atk, this.base_def, this.base_spatk, this.base_spdef, this.base_speed);
         switch(highest_stat)
@@ -233,7 +258,7 @@ class PokemonBaseStats
         }
     }
 
-    get_lowest_base_stat()
+    get lowest_base_stat()
     {
         let lowest_stat = Math.min(this.base_hp, this.base_atk, this.base_def, this.base_spatk, this.base_spdef, this.base_speed);
         switch(lowest_stat)
@@ -259,10 +284,7 @@ class PokemonBaseStats
         }
     }
 
-    get_stats_in_order()
-    {
-        return [{"n": "HP", "v": this.base_hp}, {"n": "Attack", "v": this.base_atk}, {"n": "Defense", "v": this.base_def}, {"n": "Special Attack", "v": this.base_spatk}, {"n": "Special Defense", "v": this.base_spdef}, {"n": "Speed", "v": this.base_speed}];
-    }
+    
 }
 
 class PokemonTypes
@@ -286,7 +308,7 @@ class PokemonTypes
         }
     }
 
-    get_type_string_both() // Gets the string for the type. If there is only one type, it will return that type. If there are two types, it will return both types separated by "and".
+    get type_string_both() // Gets the string for the type. If there is only one type, it will return that type. If there are two types, it will return both types separated by "and".
     {
         switch(this.type2)
         {
@@ -299,7 +321,7 @@ class PokemonTypes
         }
     }
 
-    get_only_one_type() // For harder difficulties.
+    get type_string_only_one() // For harder difficulties.
     {
         switch(this.type2)
         {
@@ -339,7 +361,7 @@ class PokemonSize
         return kg * 2.20462;
     }
 
-    get_height(difficulty_integer)
+    get_height_string(difficulty_integer)
     {
         switch(difficulty_integer)
         {
@@ -368,7 +390,7 @@ class PokemonSize
     }
 
 
-    get_weight(difficulty_integer)
+    get_weight_string(difficulty_integer)
     {
         switch(difficulty_integer)
         {
