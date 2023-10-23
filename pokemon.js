@@ -727,7 +727,7 @@ class Pokemon
                     switch(difficulty_integer) // We don't do highest/lowest on easy. On medium highest/lowest is a 25% chance. On hard it's a 50% chance.
                     {
                         case 1:
-                            let stat_array = this.base_stats.get_stats_in_order();
+                            let stat_array = this.base_stats.stats_in_order;
                             stat_array = stat_array.sort(() => 0.5 - Math.random());
                             stat_array = stat_array.slice(0, 3);
                             fact_pool.push("This Pokémon has a base " + stat_array[0].n + " of " + String(stat_array[0].v) + ", a base " + stat_array[1].n + " of " + String(stat_array[1].v) + ", and a base " + stat_array[2].n + " of " + String(stat_array[2].v) + ".");
@@ -746,7 +746,7 @@ class Pokemon
                                     }
                                     break;
                                 default:
-                                    let stat_array = this.base_stats.get_stats_in_order();
+                                    let stat_array = this.base_stats.stats_in_order;
                                     stat_array = stat_array.sort(() => 0.5 - Math.random());
                                     stat_array = stat_array.slice(0, 2);
                                     fact_pool.push("This Pokémon has a base " + stat_array[0].n + " of " + String(stat_array[0].v) + " and a base " + stat_array[1].n + " of " + String(stat_array[1].v) + ".");
@@ -759,15 +759,15 @@ class Pokemon
                                     switch(Math.floor(Math.random() * 2))
                                     {
                                         case 0: // Lowest
-                                            fact_pool.push("This Pokémon's lowest base stat is " + this.base_stats.get_lowest_base_stat() + ".");
+                                            fact_pool.push("This Pokémon's lowest base stat is " + this.base_stats.lowest_base_stat + ".");
                                             break;
                                         case 1: // Highest
-                                            fact_pool.push("This Pokémon's highest base stat is " + this.base_stats.get_highest_base_stat() + ".");
+                                            fact_pool.push("This Pokémon's highest base stat is " + this.base_stats.highest_base_stat + ".");
                                             break;
                                     }
                                     break;
                                 default:
-                                    let stat_array = this.base_stats.get_stats_in_order();
+                                    let stat_array = this.base_stats.stats_in_order;
                                     stat_array = stat_array.sort(() => 0.5 - Math.random());
                                     stat_array = stat_array.slice(0, 1);
                                     fact_pool.push("This Pokémon has a base " + stat_array[0].n + " of " + String(stat_array[0].v) + ".");
@@ -791,7 +791,7 @@ class Pokemon
                     }
                     break;
                 case 11: // Gender data
-                    fact_pool.push(this.gender_data.get_gender_string());
+                    fact_pool.push(this.gender_data.gender_string);
                     break;
                 case 12: // Growth rate
                     fact_pool.push("This Pokémon has a " + this.growth_rate + " growth rate.");
