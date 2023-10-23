@@ -456,13 +456,13 @@ class Pokemon
                 case 0: // Type
                     if (difficulty_integer < 2)
                     {
-                        let type_string = this.pokemon_types.get_type_string_both();
+                        let type_string = this.pokemon_types.type_string_both;
                         fact_pool.push("This Pokémon is a " + type_string + " type.");
                         break;
                     }
                     else
                     {
-                        let type_string = this.pokemon_types.get_only_one_type();
+                        let type_string = this.pokemon_types.type_string_only_one;
                         fact_pool.push("This Pokémon has the " + type_string + " type, and possibly one other type.");
                         break;
                     }
@@ -718,10 +718,10 @@ class Pokemon
                     }
                     break;
                 case 7: // Height: Exact on easy, +/- 25% on medium, +/- 50% on hard.
-                    fact_pool.push(this.pokemon_size.get_height(difficulty_integer));
+                    fact_pool.push(this.pokemon_size.get_height_string(difficulty_integer));
                     break;
                 case 8: // Weight: Exact on easy, +/- 25% on medium, +/- 50% on hard.
-                    fact_pool.push(this.pokemon_size.get_weight(difficulty_integer));
+                    fact_pool.push(this.pokemon_size.get_weight_string(difficulty_integer));
                     break;
                 case 9: // Base Stats
                     switch(difficulty_integer) // We don't do highest/lowest on easy. On medium highest/lowest is a 25% chance. On hard it's a 50% chance.
