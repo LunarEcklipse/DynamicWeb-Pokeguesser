@@ -26,6 +26,153 @@ class GameDifficulty
                 return "Invalid";
         }
     }
+
+    is_easy()
+    {
+        return this.difficulty === 1;
+    }
+
+    is_medium()
+    {
+        return this.difficulty === 2;
+    }
+
+    is_hard()
+    {
+        return this.difficulty === 3;
+    }
+}
+
+class PokemonEggGroupContainer
+{
+    constructor(egg_groups)
+    {
+        switch(typeof(egg_groups))
+        {
+            case "string":
+                this.egg_groups = [egg_groups];
+                break;
+            case "array":
+                this.egg_groups = egg_groups;
+                break;
+            default:
+                throw new Error("Invalid Type for egg_groups: " + typeof(egg_groups));
+                break;
+        }
+    }
+
+    get egg_groups()
+    {
+        return this.egg_groups;
+    }
+    
+    get egg_groups_pretty()
+    {
+        let egg_groups_pretty = [];
+        for (let i = 0; i < this.egg_groups.length; i++)
+        {
+            switch(this.name)
+            {
+            case "monster":
+                egg_groups_pretty.push("Monster");
+                break;
+            case "water1":
+                egg_groups_pretty.push("Water 1");
+                break;
+            case "bug":
+                egg_groups_pretty.push("Bug");
+                break;
+            case "flying":
+                egg_groups_pretty.push("Flying");
+                break;
+            case "ground":
+                egg_groups_pretty.push("Ground");
+                break;
+            case "fairy":
+                egg_groups_pretty.push("Fairy");
+                break;
+            case "plant":
+                egg_groups_pretty.push("Grass");
+                break;
+            case "humanshape":
+                egg_groups_pretty.push("Human-Like");
+                break;
+            case "water3":
+                egg_groups_pretty.push("Water 3");
+                break;
+            case "mineral":
+                egg_groups_pretty.push("Mineral");
+                break;
+            case "indeterminate":
+                egg_groups_pretty.push("Indeterminate");
+                break;
+            case "water2":
+                egg_groups_pretty.push("Water 2");
+                break;
+            case "ditto":
+                egg_groups_pretty.push("Ditto");
+                break;
+            case "dragon":
+                egg_groups_pretty.push("Dragon");
+                break;
+            case "no-eggs":
+                egg_groups_pretty.push("No Eggs");
+                break;
+            }
+        }
+        return egg_groups_pretty;
+    }
+
+    get egg_group_random() // Returns one of the egg groups at random.
+    {
+        return this.egg_groups[Math.floor(Math.random() * this.egg_groups.length)];
+    }
+
+    get egg_group_random_pretty() // Returns a prettified version of a random egg group.
+    {
+        let egg_groups_pretty = this.egg_groups_pretty;
+        return egg_groups_pretty[Math.floor(Math.random() * egg_groups_pretty.length)];
+    }
+
+    get has_egg_group()
+    {
+        return this.egg_groups[0] === "no-eggs";
+    }
+
+    get egg_fact_easy() // TODO
+    {
+
+    }
+
+    get egg_fact_medium() // TODO
+    {
+
+    }
+
+    get egg_fact_hard() // TODO
+    {
+
+    }
+
+    get_random_egg_fact(difficulty)
+    {
+        switch(difficulty)
+        {
+            case 1:
+                return this.egg_fact_easy;
+                break
+            case 2:
+                return this.egg_fact_medium;
+                break;
+            case 3:
+                return this.egg_fact_hard;
+                break;
+            default:
+                throw new Error("Invalid Difficulty:" + difficulty);
+                break;
+            }
+        return null;
+    }
 }
 
 class PokemonGender
@@ -287,3 +434,4 @@ class PokemonGender
         return null;
     }
 }
+
