@@ -66,8 +66,9 @@
 
             console.log("Beginning fetch from cache...");
             console.log("Fetching alternative generation facts...");
-            var cache_data = {
-                alternative_generation_facts = get_alternative_generation_facts();
+            
+            var cache_data = { // This variable is an object to put any fetched cache data into.
+                alternative_generation_facts: get_alternative_generation_facts()
             }
             
             var fact_pool = [];
@@ -81,7 +82,7 @@
             $(document).ready(function() {
                 // Create an anonymous async function to run the code
                 (async () => {
-                    alternative_generation_facts = await alternative_generation_facts;
+                    cache_data.alternative_generation_facts = await cache_data.alternative_generation_facts;
                     console.log("Alternative generation facts successfully fetched.");
                     start_button = document.getElementById("start-button");
                     start_button.addEventListener("click", (e) => {
