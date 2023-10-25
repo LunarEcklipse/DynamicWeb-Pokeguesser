@@ -134,28 +134,84 @@ class PokemonEggGroupContainer
         return egg_groups_pretty[Math.floor(Math.random() * egg_groups_pretty.length)];
     }
 
-    get has_egg_group()
+    get egg_groups_not_in()
     {
-        return this.egg_groups[0] === "no-eggs";
+        // Compare two lists together and get the items that are in the first list but not the second.
+        let egg_groups_not_in = ["Monster", "Water 1", "Bug", "Flying", "Ground", "Fairy", "Grass", "Human-Like", "Water 3", "Mineral", "Indeterminate", "Water 2", "Dragon"];
+        let egg_groups_in = this.egg_groups_pretty;
+        egg_groups_not_in = egg_groups_not_in.filter(function(obj) { return egg_groups_in.indexOf(obj) == -1; });
+        return egg_groups_not_in
     }
 
-    get egg_fact_easy() // TODO
-    {
-
+    get has_egg_group() // Returns whether or not this Pokemon has an egg group at all.
+    { 
+        return (this.egg_groups.length === 0 || this.egg_groups[0] === "no-eggs");
     }
 
-    get egg_fact_medium() // TODO
+    get egg_group_is_ditto()
     {
-
+        return this.egg_groups[0] === "ditto";
     }
 
-    get egg_fact_hard() // TODO
+    get egg_fact_easy()
     {
+        switch(this.has_egg_group)
+        {
+            case true:
+                let groups = this.egg_groups_pretty;
+                if (groups.length > 1)
+                {
+                    return "This Pokémon is in the " + groups[0] + " and " + groups[1] + " egg groups.";
+                }
+                else
+                {
+                    return "This Pokémon is in the " + groups[0] + " egg group.";
+                }
+                break;
+            case false:
+                return "This Pokémon is not in any egg groups.";
+                break;
+        }
+    }
 
+    get egg_fact_medium()
+    {
+        switch(this.has_egg_group)
+        {
+            case true:
+                let groups = this.egg_groups_pretty;
+                if (groups.length > 1)
+                {
+                    // Randomize the order of the egg groups array
+                    groups = groups.sort(() => Math.random() - 0.5);
+                    return "This Pokémon is in the " + groups[0] + " egg group, and possibly one other egg group.";
+                }
+                else
+                {
+                    return "This Pokémon is in the " + groups[0] + " egg group, and possibly one other egg group.";
+                }
+                break;
+            case false:
+                return "This Pokémon is not in any egg groups.";
+                break;
+        }
+    }
+
+    get egg_fact_hard()
+    {
+        // Get three random egg groups that this Pokemon is not in.
+        let groups = this.egg_groups_not_in;
+        groups = groups.sort(() => Math.random() - 0.5);
+        groups = groups.slice(0, 3);
+        return "This Pokémon is not in the " + groups[0] + ", " + groups[1] + ", or " + groups[2] + " egg groups.";
     }
 
     get_random_egg_fact(difficulty)
     {
+        if (this.egg_group_is_ditto) // We don't want to give them this one, it would be way too easy.
+        {
+            return null;
+        }
         switch(difficulty)
         {
             case 1:
@@ -435,3 +491,7 @@ class PokemonGender
     }
 }
 
+class Pokemon
+{
+    
+}
