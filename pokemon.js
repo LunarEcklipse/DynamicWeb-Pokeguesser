@@ -436,7 +436,7 @@ class Pokemon
         this.is_baby = is_baby;
         this.is_legendary = is_legendary;
         this.is_mythical = is_mythical;
-        this.shape = shape;
+        this.shape = shape; 
         this.num_varieties = num_varieties;
         this.pokemon_size = pokemon_size;
         this.official_artwork = official_artwork;

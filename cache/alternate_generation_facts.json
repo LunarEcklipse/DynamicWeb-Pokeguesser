@@ -1,0 +1,130 @@
+{
+    "generation-i": {
+        "easy": [
+            "This Pokémon's generation introduced the region of Kanto.",
+            "This Pokémon's generation's Starter Pokémon were Bulbasaur, Charmander, and Squirtle."
+        ],
+        "medium": [
+            "This Pokémon's generation introduced the region of Kanto."
+        ],
+        "hard": [
+            "In this Pokémon's generation, Psychic types were considered overly strong because their only weakness was Bug types and their moves were only resisted by other Psychic types.",
+            "This Pokémon's generation did not have Special Attack or Special Defense stats, only Special, which was effectively a combination of the two.",
+            "In this Pokémon's generation, every attack had a minimum 1/256 chance of missing, with the exception of Swift."
+        ]
+    },
+    "generation-ii": {
+        "easy": [
+            "This Pokémon's generation introduced the region of Johto.",
+            "This Pokémon's generation's Starter Pokémon were Chikorita, Cyndaquil, and Totodile."
+        ],
+        "medium": [
+            "This Pokémon's generation introduced the region of Johto.",
+            "This Pokémon's generation introduced the Steel type.",
+            "This Pokémon's generation introduced the Dark type.",
+            "This Pokémon's generation introduced Shiny Pokémon.",
+            "This Pokémon's generation introduced Baby Pokémon."
+        ],
+        "hard": [
+            "This Pokémon's generation introduced breeding mechanics to the series.",
+            "This Pokémon's generation introduced Roaming Legendaries.",
+            "This Pokémon's generation introduced Shiny Pokémon.",
+            "This Pokémon's generation introduced Baby Pokémon.",
+            "This Pokémon's generation introduced Pokérus."
+        ]
+    },
+    "generation-iii": {
+        "easy": [
+            "This Pokémon's generation introduced the region of Hoenn.",
+            "This Pokémon's generation's Starter Pokémon were Treecko, Torchic, and Mudkip."
+        ],
+        "medium": [
+            "This Pokémon's generation introduced the region of Hoenn."
+        ],
+        "hard": [
+            "This Pokémon's generation added Contests.",
+            "This Pokémon's generation was the first to have Weather affect battles."
+        ]
+    },
+    "generation-iv": {
+        "easy": [
+            "This Pokémon's generation introduced the region of Sinnoh."
+        ],
+        "medium": [
+            "This Pokémon's generation introduced the region of Sinnoh.",
+            "This Pokémon's generation was the first to introduce online battling."
+        ],
+        "hard": [
+            "This Pokémon's generation removed the Cacophony ability."
+        ]
+    },
+    "generation-v": {
+        "easy": [
+            "This Pokémon's generation introduced the region of Unova."
+        ],
+        "medium": [
+            "This Pokémon's generation introduced the region of Unova."
+        ],
+        "hard": [
+            "This Pokémon's generation was the first to combine the Poké Mart with the Pokémon Center.",
+            "This Pokémon's generation changed the move Curse from the ??? type to the Ghost type."
+        ]
+    },
+    "generation-vi": {
+        "easy": [
+            "This Pokémon's generation introduced the region of Kalos."
+        ],
+        "medium": [
+            "This Pokémon's generation introduced the region of Kalos.",
+            "This Pokémon's generation introduced the Fairy type."
+        ],
+        "hard": [
+            "This Pokémon's generation was the first to introduce clothing outfits for player characters.",
+            "This Pokémon's generation introduced the Super Training mechanic."
+        ]
+    },
+    "generation-vii": {
+        "easy": [
+            "This Pokémon's generation introduced the region of Alola."
+        ],
+        "medium": [
+            "This Pokémon's generation introduced the region of Alola.",
+            "This Pokémon's generation was the first to introduce new forms of older Pokémon.",
+            "This Pokémon's generation introduced Ultra Beasts."
+
+        ],
+        "hard": [
+            "This Pokémon's generation introduced the Zygarde Cube."
+        ]
+    },
+    "generation-viii": {
+        "easy": [
+            "This Pokémon's generation introduced the region of Galar.",
+            "This Pokémon's generation introduced the region of Hisui."
+        ],
+        "medium": [
+            "This Pokémon's generation introduced the region of Galar.",
+            "This Pokémon's generation introduced the region of Hisui.",
+            "This Pokémon's generation's main region was based on the United Kingdom.",
+            "This Pokémon's generation's main game's villain team was Team Yell.",
+            "This Generation included a remake of Pokemon Diamond and Pearl."
+        ],
+        "hard": [
+            "This Pokémon's generation introduced the first Dark type Gym Leader.",
+            "This Pokémon's generation introduced the Ability Quick Draw.",
+            "This Pokémon's generation introduced the Ability Unseen Fist."
+        ]   
+    },
+    "generation-ix": {
+        "easy": [
+            "This Pokémon's generation introduced the region of Paldea."
+        ],
+        "medium": [
+            "This Pokémon's generation introduced the region of Paldea."
+        ],
+        "hard": [
+            "This Pokémon's generation completely removed encounters in tall grass, caves, and water.",
+            "This Pokémon's generation no longer makes NPC trainers engage you in battle upon eye contact."
+        ]
+    }
+}

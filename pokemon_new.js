@@ -4,7 +4,29 @@ class GameDifficulty
 {
     constructor(difficulty)
     {
-        this.difficulty = difficulty;
+        switch(typeof(difficulty))
+        {
+            case "number":
+                this.difficulty = difficulty;
+                break;
+            case "string":
+                switch(difficulty.toLowerCase())
+                {
+                    case "easy":
+                        this.difficulty = 1;
+                        break;
+                    case "normal":
+                        this.difficulty = 2;
+                        break;
+                    case "hard":
+                        this.difficulty = 3;
+                        break;
+                    default:
+                        throw new Error("Invalid Difficulty String: " + difficulty);
+                        break;
+                }
+                break;
+        }
     }
 
     get difficulty()
@@ -43,7 +65,172 @@ class GameDifficulty
     }
 }
 
-class PokemonEggGroupContainer
+class PokemonAbility // Manages the ability itself. We store the English stuff in short, and the other languages in localisations.
+{
+    constructor(resource_name, name_pretty, desc_long, desc_short, is_hidden, localisations)
+    {
+        this.resource_name = resource_name; // Expect string
+        this.name_pretty = name_pretty; // Expect string
+        this.desc_long = desc_long; // Expect string
+        this.desc_short = desc_short;
+        this.is_hidden = is_hidden;
+        this.localisations = localisations;
+    }
+}
+
+class PokemonAbilityLocalisation // Handles an individual localisation of an ability's name.
+{
+    constructor(name, language, desc_long, desc_short)
+    {
+        this.name = name;
+        this.language = language;
+        this.desc_long = desc_long;
+        this.desc_short = desc_short;
+    }
+}
+
+class PokemonAbilityWrapper // Wraps multiple abilities together
+{
+    constructor(ability_list)
+    {
+        this.ability_list = ability_list;
+    }
+
+    get ability_fact_easy()
+    {
+        let ability_list = this.ability_list;
+        ability_list = ability_list.sort(() => Math.random() - 0.5);
+        if (ability_list.length >= 3)
+        {
+            // Print 3 random abilities
+            return "This Pokémon can have the abilities " + ability_list[0].name_pretty + ", " + ability_list[1].name_pretty + ", or " + ability_list[2].name_pretty + ".";
+        }
+        else if (this.ability_list.length === 2)
+        {
+            // Print 2 random abilities
+            return "This Pokémon can have the abilities " + ability_list[0].name_pretty + " or " + ability_list[1].name_pretty + ".";
+        }
+        else if (this.ability_list.length === 1)
+        {
+            return "This Pokémon can have the ability " + ability_list[0].name_pretty + ".";
+        }
+        else
+        {
+            return "This Pokémon has cannot have any abilities.";
+        }
+    }
+
+    get ability_fact_medium()
+    {
+        let ability_list = this.ability_list;
+        ability_list = ability_list.sort(() => Math.random() - 0.5);
+        switch(Math.floor(Math.random() * 2))
+        {
+            case 0:
+                // If has 3 abilities, print two abilities
+                if (ability_list.length >= 3)
+                {
+                    return "This Pokémon can have the abilities " + ability_list[0].name_pretty + " or " + ability_list[1].name_pretty + ", or potentially one other ability.";
+                }
+                else if (ability_list.length === 2)
+                {
+                    return "This Pokémon can have the abilities " + ability_list[0].name_pretty + " or " + ability_list[1].name_pretty + ", or potentially one other ability.";
+                }
+                else if (ability_list.length === 1)
+                {
+                    return "This Pokémon can have the ability " + ability_list[0].name_pretty + ".";
+                }
+                else
+                {
+                    return "This Pokémon has cannot have any abilities.";
+                }
+                break;
+            case 1:
+                // Find the hidden ability if it exists
+                let hidden_ability = undefined;
+                for (let i = 0; i < ability_list.length; i++)
+                {
+                    if (ability_list[i].is_hidden)
+                    {
+                        hidden_ability = ability_list[i];
+                        break;
+                    }
+                }
+                if (hidden_ability === undefined)
+                {
+                    return "This Pokémon does not have any hidden ability.";
+                }
+                else
+                {
+                    return "This Pokémon can have the hidden ability " + hidden_ability.name_pretty + ".";
+                }
+                break;
+            default:
+                throw new Error("Invalid Random Number (Not between 0 and 1).");
+        }
+
+    }
+
+    get ability_fact_hard()
+    {
+        let ability_list = this.ability_list;
+        ability_list = ability_list.sort(() => Math.random() - 0.5);
+        switch(Math.floor(Math.random() * 2))
+        {
+            case 0:
+                if (ability_list.length > 0)
+                {
+                    return "This Pokémon can have the ability " + ability_list[0].name_pretty + " or potentially one or two other abilities.";
+                }
+                else
+                {
+                    return "This Pokémon cannot have any ability.";
+                }
+            case 1:
+                // Print how many non-hidden abilities the pokemon has
+                let non_hidden_abilities = 0;
+                for (let i = 0; i < ability_list.length; i++)
+                {
+                    if (!ability_list[i].is_hidden)
+                    {
+                        non_hidden_abilities++;
+                    }
+                }
+                if (non_hidden_abilities === 1)
+                {
+                    return "This Pokémon has one non-hidden ability.";
+                }
+                else
+                {
+                    return "This Pokémon has two non-hidden abilities.";
+                }
+            default:
+                throw new Error("Invalid Random Number (Not between 0 and 1).");
+                break;
+        }
+    }
+
+    get_ability_fact(difficulty) // Supply difficulty as integer
+    {
+        switch(difficulty)
+        {
+            case 1:
+                return this.ability_fact_easy;
+                break
+            case 2:
+                return this.ability_fact_medium;
+                break;
+            case 3:
+                return this.ability_fact_hard;
+                break;
+            default:
+                throw new Error("Invalid Difficulty:" + difficulty);
+                break;
+            }
+        return null;
+    }
+}
+class PokemonEggGroupWrapper // Wraps multiple egg groups together
 {
     constructor(egg_groups)
     {
@@ -233,7 +420,7 @@ class PokemonEggGroupContainer
 
 class PokemonGender
 {
-    constructor(gender_rate, has_gender_differences)
+    constructor(gender_rate, has_gender_differences) // Constructs the data from how it's stored on PokeAPI
     {
         this.has_gender_differences = has_gender_differences;
         switch(gender_rate)
@@ -489,6 +676,99 @@ class PokemonGender
             }
         return null;
     }
+}
+
+class PokemonGeneration
+{
+    constructor(generation_name, main_region, main_region_prettified)
+    {
+        this.name = generation_name;
+        this.main_region = main_region // Expects a PokemonRegion object.
+    }
+
+    get generation_fact_easy()
+    {
+
+    }
+
+    get generation_fact_medium()
+    {
+
+    }
+
+    get generation_fact_hard()
+    {
+        
+    }
+}
+
+class PokemonMove // Manages the move itself
+{
+    constructor(name, type, power, accuracy, damage_type, pp, effect, effect_chance)
+    {
+        
+    }
+}
+
+class PokemonMoveWrapper // Wraps multiple moves together
+{
+    constructor(move_list)
+    {
+        // Validate every item in movelist is a PokemonMove
+        for (let i = 0; i < move_list.length; i++)
+        {
+            if (!(move_list[i] instanceof PokemonMove))
+            {
+                throw new Error("Invalid Type for move_list[" + i + "]: " + typeof(move_list[i]));
+            }
+        }
+        this.move_list = move_list;
+    }
+}
+
+class PokemonNameLocalisation // Handles an individual localisation of a pokemon's name.
+{
+
+}
+
+class PokemonNameLocalisationWrapper // Wraps all Pokemon name localisations.
+{
+
+}
+
+class PokemonRegion
+{
+
+}
+
+class PokemonShape
+{
+
+}
+
+class PokemonSize
+{
+
+}
+
+class PokemonSpecialType // Handles Baby, Legendary, and Mythical information.
+{
+
+}
+
+class PokemonStats
+{
+
+}
+
+class PokemonType // Single type
+{
+
+}
+
+class PokemonTypeWrapper // Wraps multiple types
+{
+
 }
 
 class Pokemon

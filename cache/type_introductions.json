@@ -1,0 +1,74 @@
+[
+    {
+        "type": "normal",
+        "gen": "generation-i"
+    },
+    {
+        "type": "fighting",
+        "gen": "generation-i"
+    },
+    {
+        "type": "flying",
+        "gen": "generation-i"
+    },
+    {
+        "type": "poison",
+        "gen": "generation-i"
+    },
+    {
+        "type": "ground",
+        "gen": "generation-i"
+    },
+    {
+        "type": "rock",
+        "gen": "generation-i"
+    },
+    {
+        "type": "bug",
+        "gen": "generation-i"
+    },
+    {
+        "type": "ghost",
+        "gen": "generation-i"
+    },
+    {
+        "type": "fire",
+        "gen": "generation-i"
+    },
+    {
+        "type": "water",
+        "gen": "generation-i"
+    },
+    {
+        "type": "grass",
+        "gen": "generation-i"
+    },
+    {
+        "type": "electric",
+        "gen": "generation-i"
+    },
+    {
+        "type": "psychic",
+        "gen": "generation-i"
+    },
+    {
+        "type": "ice",
+        "gen": "generation-i"
+    },
+    {
+        "type": "dragon",
+        "gen": "generation-i"
+    },
+    {
+        "type": "dark",
+        "gen": "generation-ii"
+    },
+    {
+        "type": "steel",
+        "gen": "generation-ii"
+    },
+    {
+        "type": "fairy",
+        "gen": "generation-vi"
+    }
+]
