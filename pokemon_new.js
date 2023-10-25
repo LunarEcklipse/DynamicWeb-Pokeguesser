@@ -686,19 +686,71 @@ class PokemonGeneration
         this.main_region = main_region // Expects a PokemonRegion object.
     }
 
-    get generation_fact_easy()
+    get generation_name_pretty()
+    {
+        switch(this.name)
+        {
+            case "generation-i":
+                return "Generation I";
+                break;
+            case "generation-ii":
+                return "Generation II";
+                break;
+            case "generation-iii":
+                return "Generation III";
+                break;
+            case "generation-iv":
+                return "Generation IV";
+                break;
+            case "generation-v":
+                return "Generation V";
+                break;
+            case "generation-vi":
+                return "Generation VI";
+                break;
+            case "generation-vii":
+                return "Generation VII";
+                break;
+            case "generation-viii":
+                return "Generation VIII";
+                break;
+            case "generation-ix":
+                return "Generation IX";
+                break;
+            default:
+                throw new Error("Invalid Generation Name: " + this.name);
+                break;
+        }
+    }
+
+    get alternate_generation_fact_easy() // 25% chance of alternate fact
     {
 
     }
 
-    get generation_fact_medium()
+    get alternative_generation_fact_medium() // 50% chance of alternate fact.
     {
 
     }
 
-    get generation_fact_hard()
+    get alternative_generation_fact_hard() // 75% chance of alternate fact.
     {
-        
+
+    }
+
+    get generation_fact_easy() // 25% chance of alternate fact
+    {
+        return "This Pokémon is from " + this.main_region_prettified + ".";
+    }
+
+    get generation_fact_medium() // 50% chance of alternate fact.
+    {
+        return "This Pokémon is from " + this.main_region_prettified + ".";
+    }
+
+    get generation_fact_hard() // 75% chance of alternate fact.
+    {
+        return "This Pokémon is from " + this.main_region_prettified + ".";
     }
 }
 
