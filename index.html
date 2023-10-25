@@ -66,7 +66,9 @@
 
             console.log("Beginning fetch from cache...");
             console.log("Fetching alternative generation facts...");
-            var alternative_generation_facts = get_alternative_generation_facts();
+            var cache_data = {
+                alternative_generation_facts = get_alternative_generation_facts();
+            }
             
             var fact_pool = [];
             var is_ready = false;
