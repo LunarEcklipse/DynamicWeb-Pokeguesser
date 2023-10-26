@@ -334,14 +334,26 @@ class PokemonEggGroupWrapper // Wraps multiple egg groups together
     {
         switch(typeof(egg_groups))
         {
-            case "string":
+            case "object":
+                if (!(egg_groups instanceof PokemonEggGroup))
+                {
+                    throw new Error("Invalid Type for egg_groups (must be PokemonEggGroup or array of PokemonEggGroup): " + typeof(egg_groups));
+                }
                 this.egg_groups = [egg_groups];
                 break;
             case "array":
+                // Validate every item in the array is an instance of PokemonEggGroup
+                for (let i = 0; i < egg_groups.length; i++)
+                {
+                    if (!(egg_groups[i] instanceof PokemonEggGroup))
+                    {
+                        throw new Error("Invalid Type for egg_groups[" + i + "] (must be PokemonEggGroup): " + typeof(egg_groups[i]));
+                    }
+                }
                 this.egg_groups = egg_groups;
                 break;
             default:
-                throw new Error("Invalid Type for egg_groups: " + typeof(egg_groups));
+                throw new Error("Invalid Type for egg_groups (must be PokemonEggGroup or array of PokemonEggGroup): " + typeof(egg_groups));
                 break;
         }
     }
