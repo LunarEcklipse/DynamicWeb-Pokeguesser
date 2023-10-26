@@ -62,7 +62,7 @@ class PokemonAPI
                 dataType: 'json',
                 success: function(data)
                 {
-                    pokemon = data;
+                    pokemon_species_raw = data;
                 },
                 error: function(error)
                 {
@@ -87,7 +87,7 @@ class PokemonAPI
                 dataType: 'json',
                 success: function(data)
                 {
-                    pokemon = data;
+                    pokemon_raw = data;
                 },
                 error: function(error)
                 {
@@ -101,6 +101,9 @@ class PokemonAPI
             console.error("Could not fetch pokemon " + String(pokemon_id_number) + ": " + error);
             return null;
         }
+
+        let pokemon_gender = new PokemonGender(pokemon_species_raw.gender_rate, pokemon_species_raw.has_gender_differences);
+        let 
     }
 
     

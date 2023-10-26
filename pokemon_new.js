@@ -65,6 +65,20 @@ class GameDifficulty
     }
 }
 
+class ShortPokemon // Stores a pokemon's bare minimum data for the purpose of storing lists in other places
+{
+    constructor(species_name, species_id_number)
+    {
+        this.name = species_name
+        this.id_number = species_id_number
+    }
+
+    get name_lowercase()
+    {
+        return this.name.toLowerCase();
+    }
+}
+
 class PokemonAbilityLocalisation // Handles an individual localisation of an ability's name.
 {
     constructor(name, language, desc_long, desc_short)
@@ -78,14 +92,65 @@ class PokemonAbilityLocalisation // Handles an individual localisation of an abi
 
 class PokemonAbility // Manages the ability itself. We store the English stuff in short, and the other languages in localisations.
 {
-    constructor(resource_name, name_pretty, desc_long, desc_short, is_hidden, localisations)
+    constructor(resource_name, name_pretty, desc_long, desc_short, is_hidden, localisations, other_pokemon_with)
     {
         this.resource_name = resource_name; // Expect string
         this.name_pretty = name_pretty; // Expect string
         this.desc_long = desc_long; // Expect string
         this.desc_short = desc_short;
+        if (typeof(is_hidden) !== "boolean")
+        {
+            throw new Error("Invalid Type for is_hidden (must be boolean): " + typeof(is_hidden));
+        }
         this.is_hidden = is_hidden;
-        this.localisations = localisations;
+        // Validate localisations is an array of PokemonAbilityLocalisation
+        switch(typeof(localisations))
+        {
+            case "array":
+                for (let i = 0; i < localisations.length; i++)
+                {
+                    if (!(localisations[i] instanceof PokemonAbilityLocalisation))
+                    {
+                        throw new Error("Invalid Type for localisations[" + i + "] (must be PokemonAbilityLocalisation): " + typeof(localisations[i]));
+                    }
+                }
+                this.localisations = localisations;
+                break;
+            case "object":
+                if (!(localisations instanceof PokemonAbilityLocalisation))
+                {
+                    throw new Error("Invalid Type for localisations (must be PokemonAbilityLocalisation or array of PokemonAbilityLocalisation): " + typeof(localisations));
+                }
+                this.localisations = [localisations];
+                break;
+            default:
+                throw new Error("Invalid Type for localisations (must be PokemonAbilityLocalisation or array of PokemonAbilityLocalisation): " + typeof(localisations));
+                break;
+        }
+        // Validate other_pokemon_with is an array of ShortPokemon
+        switch(typeof(other_pokemon_with))
+        {
+            case "array":
+                for (let i = 0; i < other_pokemon_with.length; i++)
+                {
+                    if (!(other_pokemon_with[i] instanceof ShortPokemon))
+                    {
+                        throw new Error("Invalid Type for other_pokemon_with[" + i + "] (must be ShortPokemon): " + typeof(other_pokemon_with[i]));
+                    }
+                }
+                this.other_pokemon_with = other_pokemon_with;
+                break;
+            case "object":
+                if (!(other_pokemon_with instanceof ShortPokemon))
+                {
+                    throw new Error("Invalid Type for other_pokemon_with (must be ShortPokemon or array of ShortPokemon): " + typeof(other_pokemon_with));
+                }
+                this.other_pokemon_with = [other_pokemon_with];
+                break;
+            default:
+                throw new Error("Invalid Type for other_pokemon_with (must be ShortPokemon or array of ShortPokemon): " + typeof(other_pokemon_with));
+                break;
+        }
     }
 }
 
@@ -230,6 +295,39 @@ class PokemonAbilityWrapper // Wraps multiple abilities together
         return null;
     }
 }
+
+class PokemonEggGroup // Single egg group
+{
+    constructor(name, other_pokemon_in)
+    {
+        this.name = name;
+        // Validate other_pokemon_in is an array of ShortPokemon
+        switch(typeof(other_pokemon_in))
+        {
+            case "array":
+                for (let i = 0; i < other_pokemon_in.length; i++)
+                {
+                    if (!(other_pokemon_in[i] instanceof ShortPokemon))
+                    {
+                        throw new Error("Invalid Type for other_pokemon_in[" + i + "] (must be ShortPokemon): " + typeof(other_pokemon_in[i]));
+                    }
+                }
+                this.other_pokemon_in = other_pokemon_in;
+                break;
+            case "object":
+                if (!(other_pokemon_in instanceof ShortPokemon))
+                {
+                    throw new Error("Invalid Type for other_pokemon_in (must be ShortPokemon or array of ShortPokemon): " + typeof(other_pokemon_in));
+                }
+                this.other_pokemon_in = [other_pokemon_in];
+                break;
+            default:
+                throw new Error("Invalid Type for other_pokemon_in (must be ShortPokemon or array of ShortPokemon): " + typeof(other_pokemon_in));
+                break;
+        }
+    }
+}
+
 class PokemonEggGroupWrapper // Wraps multiple egg groups together
 {
     constructor(egg_groups)
@@ -1015,9 +1113,14 @@ class PokemonNameLocalisationWrapper // Wraps all Pokemon name localisations.
     }
 }
 
+class PokemonHabitatPokemon // This object wraps a Pokemon for
+{
+
+}
+
 class PokemonHabitat // We made this an object because it makes it easier to expand later.
 {
-    constructor(habitat_name)
+    constructor(habitat_name, habitat_pokemon)
     {
         this.name = habitat_name;
     }
