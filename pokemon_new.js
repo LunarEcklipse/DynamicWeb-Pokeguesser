@@ -65,6 +65,17 @@ class GameDifficulty
     }
 }
 
+class PokemonAbilityLocalisation // Handles an individual localisation of an ability's name.
+{
+    constructor(name, language, desc_long, desc_short)
+    {
+        this.name = name;
+        this.language = language;
+        this.desc_long = desc_long;
+        this.desc_short = desc_short;
+    }
+}
+
 class PokemonAbility // Manages the ability itself. We store the English stuff in short, and the other languages in localisations.
 {
     constructor(resource_name, name_pretty, desc_long, desc_short, is_hidden, localisations)
@@ -75,17 +86,6 @@ class PokemonAbility // Manages the ability itself. We store the English stuff i
         this.desc_short = desc_short;
         this.is_hidden = is_hidden;
         this.localisations = localisations;
-    }
-}
-
-class PokemonAbilityLocalisation // Handles an individual localisation of an ability's name.
-{
-    constructor(name, language, desc_long, desc_short)
-    {
-        this.name = name;
-        this.language = language;
-        this.desc_long = desc_long;
-        this.desc_short = desc_short;
     }
 }
 
@@ -415,6 +415,52 @@ class PokemonEggGroupWrapper // Wraps multiple egg groups together
                 break;
             }
         return null;
+    }
+}
+
+class PokemonEvolutionChainPokemon
+{
+    constructor(resource_name, name_pretty)
+    {
+        this.resource_name = resource_name;
+        this.name = name_pretty;
+    }
+
+    get name_lowercase()
+    {
+        return this.name.toLowerCase();
+    }
+}
+
+class PokemonEvolutionChain // Tracks all Pokemon in an evolution chain.
+{
+    constructor(pokemon_list)
+    {
+        // Make sure every pokemon here is an instance of PokemonEvolutionChainPokemon
+        if (typeof(pokemon_list) !== "array")
+        {
+            throw new Error("Invalid Type for pokemon_list: " + typeof(pokemon_list));
+        }
+        for (let i = 0; i < pokemon_list.length; i++)
+        {
+            if (!(pokemon_list[i] instanceof PokemonEvolutionChainPokemon))
+            {
+                throw new Error("Invalid Type for pokemon_list[" + i + "]: " + typeof(pokemon_list[i]));
+            }
+        }
+        this.pokemon_list = pokemon_list;
+    }
+
+    pokemon_is_related(pokemon_name) // Returns whether or not the given pokemon is in this evolution chain.
+    {
+        for (let i = 0; i < this.pokemon_list.length; i++)
+        {
+            if (this.pokemon_list[i].name_lowercase === pokemon_name.toLowerCase())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
@@ -969,9 +1015,50 @@ class PokemonNameLocalisationWrapper // Wraps all Pokemon name localisations.
     }
 }
 
-class PokemonRegion
+class PokemonHabitat // We made this an object because it makes it easier to expand later.
 {
+    constructor(habitat_name)
+    {
+        this.name = habitat_name;
+    }
+}
 
+class PokemonHabitatWrapper
+{
+    constructor(habitats)
+    {
+        switch(typeof(habitats))
+        {
+            case "object":
+                if (!(habitats instanceof PokemonHabitat))
+                {
+                    throw new Error("Invalid Type for habitats: " + typeof(habitats));
+                }
+                this.habitats = [habitats];
+                break;
+            case "array":
+                this.habitats = habitats;
+                break;
+            default:
+                throw new Error("Invalid Type for habitats: " + typeof(habitats));
+                break;
+        }
+    }
+
+    get habitat_fact_easy()
+    {
+        
+    }
+
+    get habitat_fact_medium()
+    {
+
+    }
+
+    get habitat_fact_hard()
+    {
+
+    }
 }
 
 class PokemonShape
