@@ -756,9 +756,11 @@ class PokemonGeneration
 
 class PokemonMove // Manages the move itself
 {
-    constructor(name, type, power, accuracy, damage_type, pp, effect, effect_chance)
+    constructor(id_number, resource_name, name_pretty)
     {
-        
+        this.id_number = id_number;
+        this.resource_name = resource_name;
+        this.name = name_pretty;
     }
 }
 
@@ -776,16 +778,195 @@ class PokemonMoveWrapper // Wraps multiple moves together
         }
         this.move_list = move_list;
     }
+
+    get move_fact_easy() // Give up to 5 moves.
+    {
+        if (this.move_list.length <= 0)
+        {
+            throw new Error("Move list is empty.");
+        }
+        // Randomise the move list
+        let move_list = this.move_list.sort(() => Math.random() - 0.5);
+        switch(this.move_list.length)
+        {
+            case 1:
+                return "This Pokémon can learn " + move_list[0].name + ".";
+                break;
+            case 2:
+                return "This Pokémon can learn " + move_list[0].name + " and " + move_list[1].name + ".";
+                break;
+            case 3:
+                return "This Pokémon can learn " + move_list[0].name + ", " + move_list[1].name + ", and " + move_list[2].name + ".";
+                break;
+            case 4:
+                return "This Pokémon can learn " + move_list[0].name + ", " + move_list[1].name + ", " + move_list[2].name + ", and " + move_list[3].name + ".";
+                break;
+            default:
+                return "This Pokémon can learn " + move_list[0].name + ", " + move_list[1].name + ", " + move_list[2].name + ", " + move_list[3].name + ", and " + move_list[4].name + ".";
+                break;
+        }
+    }
+
+    get move_fact_medium() // Give up to 3 moves.
+    {
+        if (this.move_list.length <= 0)
+        {
+            throw new Error("Move list is empty.");
+        }
+        // Randomise the move list
+        let move_list = this.move_list.sort(() => Math.random() - 0.5);
+        switch(this.move_list.length)
+        {
+            case 1:
+                return "This Pokémon can learn " + move_list[0].name + ".";
+                break;
+            case 2:
+                return "This Pokémon can learn " + move_list[0].name + " and " + move_list[1].name + ".";
+                break;
+            default:
+                return "This Pokémon can learn " + move_list[0].name + ", " + move_list[1].name + ", and " + move_list[2].name + ".";
+                break;
+        }
+    }
+
+    get move_fact_hard() // Give only one move.
+    {
+        if (this.move_list.length <= 0)
+        {
+            throw new Error("Move list is empty.");
+        }
+        // Randomise the move list
+        let move_list = this.move_list.sort(() => Math.random() - 0.5);
+        return "This Pokémon can learn " + move_list[0].name + ".";
+    }
+
+    get_move_fact(difficulty)
+    {
+        switch(difficulty)
+        {
+            case 1:
+                return this.move_fact_easy;
+                break
+            case 2:
+                return this.move_fact_medium;
+                break;
+            case 3:
+                return this.move_fact_hard;
+                break;
+            default:
+                throw new Error("Invalid Difficulty:" + difficulty);
+                break;
+        }
+    }
 }
 
 class PokemonNameLocalisation // Handles an individual localisation of a pokemon's name.
 {
-
+    constructor(name, language)
+    {
+        this.name = name;
+        this.language = language;
+    }
 }
 
 class PokemonNameLocalisationWrapper // Wraps all Pokemon name localisations.
 {
+    constructor(localisations)
+    {
+        switch(typeof(localisations))
+        {
+            case "object":
+                if (localisations instanceof PokemonNameLocalisation)
+                {
+                    this.localisations = [localisations];
+                }
+                else
+                {
+                    throw new Error("Invalid Type for localisations: " + typeof(localisations));
+                }
+                break;
+            case "array":
+                for (let i = 0; i < localisations.length; i++)
+                {
+                    if (!(localisations[i] instanceof PokemonNameLocalisation))
+                    {
+                        throw new Error("Invalid Type for localisations[" + i + "]: " + typeof(localisations[i]));
+                    }
+                }
+                this.localisations = localisations;
+                break;
+        }
+    }
 
+    get localisation_fact_easy()
+    {
+        // Remove the English localisation
+        let localisations = this.localisations;
+        for (let i = 0; i < localisations.length; i++)
+        {
+            if (localisations[i].language === "en")
+            {
+                localisations.splice(i, 1);
+                break;
+            }
+        }
+        // Randomise the localisations
+        localisations = localisations.sort(() => Math.random() - 0.5);
+        return "This Pokémon is called " + localisations[0].name + " in another language.";
+    }
+
+    get localisation_fact_medium() // TODO: differentiate these a bit with some more localisation fun
+    {
+        // Remove the English localisation
+        let localisations = this.localisations;
+        for (let i = 0; i < localisations.length; i++)
+        {
+            if (localisations[i].language === "en")
+            {
+                localisations.splice(i, 1);
+                break;
+            }
+        }
+        // Randomise the localisations
+        localisations = localisations.sort(() => Math.random() - 0.5);
+        return "This Pokémon is called " + localisations[0].name + " in another language.";
+    }
+
+    get localisation_fact_hard() // TODO: Differentiate these in some way
+    {
+        // Remove the English localisation
+        let localisations = this.localisations;
+        for (let i = 0; i < localisations.length; i++)
+        {
+            if (localisations[i].language === "en")
+            {
+                localisations.splice(i, 1);
+                break;
+            }
+        }
+        // Randomise the localisations
+        localisations = localisations.sort(() => Math.random() - 0.5);
+        return "This Pokémon is called " + localisations[0].name + " in another language.";
+    }
+
+    get_localisation_fact(difficulty)
+    {
+        switch(difficulty)
+        {
+            case 1:
+                return this.localisation_fact_easy;
+                break
+            case 2:
+                return this.localisation_fact_medium;
+                break;
+            case 3:
+                return this.localisation_fact_hard;
+                break;
+            default:
+                throw new Error("Invalid Difficulty:" + difficulty);
+                break;
+        }
+    }
 }
 
 class PokemonRegion

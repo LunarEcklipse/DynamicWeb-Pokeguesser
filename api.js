@@ -16,15 +16,15 @@ class InternalAPI
                     console.log("Fetch successful!"); 
                     out = data;
                 },
-                error: function(xhr, status, error)
+                error: function(error)
                 {
-                    console.error("fuck" + status + xhr);
+                    console.error("Could not fetch alternative_generation_facts.json: " + error);
                 }
             });
         }
         catch (error)
         {
-            console.error("Could not return alternative_generation_facts.json: " + error);
+            console.error("Could not fetch alternative_generation_facts.json: " + error);
         }
         return out;
     }
