@@ -1176,7 +1176,137 @@ class PokemonSize
 
 class PokemonSpecialType // Handles Baby, Legendary, and Mythical information.
 {
+    constructor(is_baby, is_legendary, is_mythical)
+    {
+        this.is_baby = is_baby;
+        this.is_legendary = is_legendary;
+        this.is_mythical = is_mythical;
+    }
 
+    get special_type_fact_easy()
+    {
+        if (this.is_baby)
+        {
+            return "This Pokémon is a baby Pokémon.";
+        }
+        else if (this.is_legendary)
+        {
+            return "This Pokémon is a legendary Pokémon.";
+        }
+        else if (this.is_mythical)
+        {
+            return "This Pokémon is a mythical Pokémon.";
+        }
+        else
+        {
+            return "This Pokémon is not a baby, legendary, or mythical Pokémon.";
+        }
+    }
+
+    get special_type_fact_medium()
+    {
+        if (this.is_baby)
+        {
+            return "This Pokémon is not a legendary or mythical Pokémon.";
+        }
+        else if (this.is_legendary)
+        {
+            return "This Pokémon is not a baby or mythical Pokémon.";
+        }
+        else if (this.is_mythical)
+        {
+            return "This Pokémon is not a baby or legendary Pokémon.";
+        }
+        else
+        {
+            switch(Math.floor(Math.random() * 3))
+            {
+                case 0:
+                    return "This Pokémon is not a baby or legendary Pokémon.";
+                    break;
+                case 1:
+                    return "This Pokémon is not a baby or mythical Pokémon.";
+                    break;
+                default:
+                    return "This Pokémon is not a legendary or mythical Pokémon.";
+                    break;
+            }
+        }
+    }
+
+    get special_type_fact_hard()
+    {
+        if (this.is_baby)
+        {
+            switch(Math.floor(Math.random() * 2))
+            {
+                case 0:
+                    return "This Pokémon is not a legendary Pokémon.";
+                    break;
+                default:
+                    return "This Pokémon is not a mythical Pokémon.";
+                    break;
+            }
+        }
+        else if (this.is_legendary)
+        {
+            switch(Math.floor(Math.random() * 2))
+            {
+                case 0:
+                    return "This Pokémon is not a baby Pokémon.";
+                    break;
+                default:
+                    return "This Pokémon is not a mythical Pokémon.";
+                    break;
+            }
+        }
+        else if (this.is_mythical)
+        {
+            switch(Math.floor(Math.random() * 2))
+            {
+                case 0:
+                    return "This Pokémon is not a baby Pokémon.";
+                    break;
+                default:
+                    return "This Pokémon is not a legendary Pokémon.";
+                    break;
+            }
+        }
+        else
+        {
+            switch(Math.floor(Math.random() * 3))
+            {
+                case 0:
+                    return "This Pokémon is not a baby Pokémon.";
+                    break;
+                case 1:
+                    return "This Pokémon is not a legendary Pokémon.";
+                    break;
+                default:
+                    return "This Pokémon is not a mythical Pokémon.";
+                    break;
+            }
+        }
+    }
+
+    get_special_type_fact(difficulty)
+    {
+        switch(difficulty)
+        {
+            case 1:
+                return this.special_type_fact_easy;
+                break
+            case 2:
+                return this.special_type_fact_medium;
+                break;
+            case 3:
+                return this.special_type_fact_hard;
+                break;
+            default:
+                throw new Error("Invalid Difficulty:" + difficulty);
+                break;
+        }
+    }
 }
 
 class PokemonStats
