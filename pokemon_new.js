@@ -65,12 +65,17 @@ class GameDifficulty
     }
 }
 
-class ShortPokemon // Stores a pokemon's bare minimum data for the purpose of storing lists in other places
+class ShortPokemon // Stores a pokemon's bare minimum data for the purpose of storing lists in other places. Saves a URL so you can get the actual thing later.
 {
-    constructor(species_name, species_id_number)
+    constructor(species_name, species_url)
     {
         this.name = species_name
-        this.id_number = species_id_number
+        this.species_url = species_url
+    }
+
+    get species_data() // Returns a promise
+    {
+
     }
 
     get name_lowercase()
@@ -1125,16 +1130,50 @@ class PokemonNameLocalisationWrapper // Wraps all Pokemon name localisations.
     }
 }
 
-class PokemonHabitatPokemon // This object wraps a Pokemon for
-{
-
-}
-
 class PokemonHabitat // We made this an object because it makes it easier to expand later.
 {
     constructor(habitat_name, habitat_pokemon)
     {
         this.name = habitat_name;
+        // Verify habitat_pokemon is either an instance of ShortPokemon or an array of ShortPokemon
+        switch(typeof(habitat_pokemon))
+        {
+            case "object":
+                if (!(habitat_pokemon instanceof ShortPokemon))
+                {
+                    throw new Error("Invalid Type for habitat_pokemon (must be ShortPokemon or array of ShortPokmeon): " + typeof(habitat_pokemon));
+                }
+                this.pokemon = [habitat_pokemon];
+                break;
+            case "array":
+                for (let i = 0; i < habitat_pokemon.length; i++)
+                {
+                    if (!(habitat_pokemon[i] instanceof ShortPokemon))
+                    {
+                        throw new Error("Invalid Type for habitat_pokemon[" + i + "] (must be ShortPokemon): " + typeof(habitat_pokemon[i]));
+                    }
+                }
+                this.pokemon = habitat_pokemon;
+                break;
+            default:
+                throw new Error("Invalid Type for habitat_pokemon (must be ShortPokemon or array of ShortPokemon): " + typeof(habitat_pokemon));
+                break;
+        }
+    }
+
+    get habitat_fact_easy()
+    {
+
+    }
+
+    get habitat_fact_medium()
+    {
+
+    }
+
+    get habitat_fact_hard()
+    {
+
     }
 }
 
